@@ -1,0 +1,16 @@
+{
+  "name": "@platform/types",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "zod": "^4.0.0",
+    "jose": "^6.2.14",
+    "@opentelemetry/api": "1.10.0",
+    "@refinedev/core": "5.0.12"
+  }
+}

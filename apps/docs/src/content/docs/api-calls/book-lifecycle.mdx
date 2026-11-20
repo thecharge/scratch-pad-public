@@ -1,0 +1,704 @@
+---
+title: "The life of a book"
+description: "Create a book, read it, change one field, archive it, delete it softly and bring it back. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Create a book, read it, change one field, archive it, delete it softly and bring it back. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 14 step(s). 14 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create the book
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Read it back
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books/dune
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Change only the title
+
+Flag: **PASSED**
+
+Where: PATCH /v1/publishers/acme/books/dune?updateMask=title
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request PATCH 'https://localhost:8443/v1/publishers/acme/books/dune?updateMask=title' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune Messiah"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"971137c38a1f057b\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.011Z"
+}
+```
+
+### HTTP: Archive it
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books/dune:archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books/dune:archive' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"c6de13e20c916929\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.016Z"
+}
+```
+
+### HTTP: Archiving twice is a failed precondition
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books/dune:archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books/dune:archive' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_STATE_TRANSITION"
+      }
+    ],
+    "message": "The resource cannot move from ARCHIVED to ARCHIVED.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+```
+
+### HTTP: Delete it (soft delete)
+
+Flag: **PASSED**
+
+Where: DELETE /v1/publishers/acme/books/dune
+
+Action: Call books.delete to Delete a book (soft delete). Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request DELETE 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "deleteTime": "2001-01-01T00:00:00.025Z",
+  "etag": "\"d6a59554c4a0e483\"",
+  "name": "publishers/acme/books/dune",
+  "purgeTime": "2001-01-31T00:00:00.025Z",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.026Z"
+}
+```
+
+### HTTP: Restore it
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books/dune:undelete
+
+Action: Call books.undelete to Restore a deleted book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books/dune:undelete' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"56b3261d55de9f8f\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.031Z"
+}
+```
+
+### MCP: Create the book
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Read it back
+
+Flag: **PASSED**
+
+Where: tools/call books.get
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.get",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Change only the title
+
+Flag: **PASSED**
+
+Where: tools/call books.update
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.update",
+    "arguments": {
+      "name": "publishers/acme/books/dune",
+      "title": "Dune Messiah",
+      "updateMask": "title"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"971137c38a1f057b\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.011Z"
+}
+```
+
+### MCP: Archive it
+
+Flag: **PASSED**
+
+Where: tools/call books.archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.archive",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"c6de13e20c916929\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.016Z"
+}
+```
+
+### MCP: Archiving twice is a failed precondition
+
+Flag: **PASSED**
+
+Where: tools/call books.archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.archive",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource cannot move from ARCHIVED to ARCHIVED.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_STATE_TRANSITION\",\n  \"status\": \"FAILED_PRECONDITION\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Delete it (soft delete)
+
+Flag: **PASSED**
+
+Where: tools/call books.delete
+
+Action: Call books.delete to Delete a book (soft delete). Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.delete",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "deleteTime": "2001-01-01T00:00:00.025Z",
+  "etag": "\"d6a59554c4a0e483\"",
+  "name": "publishers/acme/books/dune",
+  "purgeTime": "2001-01-31T00:00:00.025Z",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.026Z"
+}
+```
+
+### MCP: Restore it
+
+Flag: **PASSED**
+
+Where: tools/call books.undelete
+
+Action: Call books.undelete to Restore a deleted book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.undelete",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"56b3261d55de9f8f\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.031Z"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

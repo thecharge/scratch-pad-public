@@ -1,0 +1,22 @@
+{
+  "name": "@platform/auth-better-auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/cimd": "^1.7.14",
+    "@better-auth/mcp": "^1.7.14",
+    "@platform/auth": "workspace:*",
+    "@platform/config": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/types": "workspace:*",
+    "better-auth": "^1.7.14",
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.14",
+    "jose": "^6.2.14"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,379 @@
+---
+title: "The headers every request carries"
+description: "A request names what it accepts with Accept, names its body with Content-Type, and arrives through the proxy. A request that lacks one is refused before the operation runs, and the answer names the header. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A request names what it accepts with Accept, names its body with Content-Type, and arrives through the proxy. A request that lacks one is refused before the operation runs, and the answer names the header. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API handling. This page has 7 step(s). 7 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book with every required header
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header 'x-platform-proxy: <proxy secret>' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Read the book with every required header
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books/dune
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'x-platform-proxy: <proxy secret>'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Read the book without Accept
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books/dune
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call fails with the reason ACCEPT_REQUIRED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is ACCEPT_REQUIRED
+- PASSED: The HTTP status is 400
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'x-platform-proxy: <proxy secret>'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "metadata": {
+          "header": "accept"
+        },
+        "reason": "ACCEPT_REQUIRED"
+      }
+    ],
+    "message": "The accept header is required. Send accept: application/json.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Read the book accepting only HTML
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books/dune
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call fails with the reason ACCEPT_UNSUPPORTED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is ACCEPT_UNSUPPORTED
+- PASSED: The HTTP status is 406
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/html' \
+  --header 'x-platform-proxy: <proxy secret>'
+```
+
+Response (error, HTTP 406):
+
+```json
+{
+  "error": {
+    "code": 406,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "metadata": {
+          "header": "accept"
+        },
+        "reason": "ACCEPT_UNSUPPORTED"
+      }
+    ],
+    "message": "The accept header text/html offers nothing this operation answers. It answers application/json.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+```
+
+### HTTP: Send a body without Content-Type
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason CONTENT_TYPE_REQUIRED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is CONTENT_TYPE_REQUIRED
+- PASSED: The HTTP status is 400
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'x-platform-proxy: <proxy secret>' \
+  --data '{"parent":"publishers/acme","bookId":"dune","title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "metadata": {
+          "header": "content-type"
+        },
+        "reason": "CONTENT_TYPE_REQUIRED"
+      }
+    ],
+    "message": "The content-type header is required when a request has a body. Send content-type: application/json.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Send a body as plain text
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason CONTENT_TYPE_UNSUPPORTED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is CONTENT_TYPE_UNSUPPORTED
+- PASSED: The HTTP status is 415
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: text/plain' \
+  --header 'x-platform-proxy: <proxy secret>' \
+  --data-raw '{
+  "parent": "publishers/acme",
+  "bookId": "dune",
+  "title": "Dune",
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com"
+}'
+```
+
+Response (error, HTTP 415):
+
+```json
+{
+  "error": {
+    "code": 415,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "metadata": {
+          "header": "content-type"
+        },
+        "reason": "CONTENT_TYPE_UNSUPPORTED"
+      }
+    ],
+    "message": "The content-type header text/plain is not supported. Send one of application/json.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+```
+
+### HTTP: Refuse a request without the proxy marker
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books/dune
+
+Action: Call books.get to Get a book. Token scopes: read.
+
+Expected result: The call fails with the reason PROXY_REQUIRED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is PROXY_REQUIRED
+- PASSED: The HTTP status is 403
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 403):
+
+```json
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "metadata": {
+          "header": "x-platform-proxy"
+        },
+        "reason": "PROXY_REQUIRED"
+      }
+    ],
+    "message": "The request did not come through the proxy. The x-platform-proxy header is missing or wrong.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

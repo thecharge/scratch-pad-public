@@ -1,0 +1,23 @@
+{
+  "name": "@platform/http-adapter",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/aip": "workspace:*",
+    "@platform/auth": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/streams": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "hono": "^4.13.14",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {}
+}

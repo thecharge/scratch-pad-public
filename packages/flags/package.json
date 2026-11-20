@@ -1,0 +1,15 @@
+{
+  "name": "@platform/flags",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@openfeature/server-sdk": "1.23.0",
+    "@platform/constants": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*"
+  }
+}

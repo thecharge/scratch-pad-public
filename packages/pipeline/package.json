@@ -1,0 +1,16 @@
+{
+  "name": "@platform/pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/types": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {}
+}

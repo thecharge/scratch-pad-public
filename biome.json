@@ -1,0 +1,184 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/.astro",
+      "!bun.lock",
+      "!openspec",
+      "!.claude",
+      "!**/drizzle/meta",
+      "!openapi/baseline.json",
+      "!packages/sdk/generated",
+      "!packages/sdk/openapi-ts.config.ts",
+      "!apps/console/src/components/ui"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "includes": [
+      "**",
+      "!**/*.md",
+      "!**/*.mdx",
+      "!**/*.yaml",
+      "!**/*.yml",
+      "!**/*.toml",
+      "!**/*.astro",
+      "!**/*.html",
+      "!**/*.vue",
+      "!**/*.svelte"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "dotenv": "Read configuration through the config package.",
+              "lodash": "Use native language features.",
+              "moment": "Use Temporal-style helpers from the aip package."
+            }
+          }
+        },
+        "noRestrictedGlobals": {
+          "level": "error",
+          "options": {
+            "deniedGlobals": {
+              "process": "Read configuration through the config package."
+            }
+          }
+        }
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/policy/src/index.ts", "packages/masking/src/index.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noUselessConstructor": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/constants/src/tooling.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "tooling/**",
+        "testing/**",
+        "packages/config/**",
+        "packages/util/src/env.ts",
+        "**/*.test.ts",
+        "**/*.config.ts",
+        "apps/api/src/main.ts",
+        "apps/infra/src/cli.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedGlobals": "off"
+          }
+        }
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "path": "./tooling/biome/no-inline-strings.grit",
+      "includes": [
+        "packages/*/src/**",
+        "apps/*/src/**",
+        "tooling/scripts/**",
+        "testing/packages/recorder/src/**",
+        "!packages/constants/**",
+        "!packages/config/src/urls.ts",
+        "!packages/config/src/environments.ts",
+        "!packages/messages/**",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!**/*.generated.ts",
+        "!packages/db/src/schema/**",
+        "!testing/packages/recorder/src/scenarios/**",
+        "!apps/console/src/components/ui/**",
+        "!apps/console/src/lib/utils.ts",
+        "!testing/packages/recorder/src/ui/seed.ts"
+      ]
+    },
+    {
+      "path": "./tooling/biome/no-local-types.grit",
+      "includes": [
+        "packages/*/src/**",
+        "packages/*/*.ts",
+        "apps/*/src/**",
+        "tooling/scripts/**",
+        "testing/**",
+        "!**/*.generated.ts",
+        "!**/drizzle/**",
+        "!packages/types/**",
+        "!**/*.d.ts",
+        "!apps/console/src/components/ui/**",
+        "!apps/console/src/lib/utils.ts"
+      ]
+    },
+    {
+      "path": "./tooling/biome/no-string-literal-types.grit",
+      "includes": [
+        "packages/*/src/**",
+        "packages/*/*.ts",
+        "apps/*/src/**",
+        "tooling/scripts/**",
+        "testing/**",
+        "!**/*.generated.ts",
+        "!**/drizzle/**",
+        "!apps/console/src/components/ui/**",
+        "!apps/console/src/lib/utils.ts"
+      ]
+    }
+  ],
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  }
+}

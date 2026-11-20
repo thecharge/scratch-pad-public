@@ -1,0 +1,18 @@
+{
+  "name": "@platform/ratelimit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/types": "workspace:*"
+  },
+  "devDependencies": {
+    "zod": "^4.0.0"
+  }
+}

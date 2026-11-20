@@ -1,0 +1,20 @@
+{
+  "name": "@platform/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./urls": "./src/urls.ts",
+    "./environments": "./src/environments.ts",
+    "./assets": "./src/assets.ts",
+    "./factual": "./src/factual.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "zod": "^4.0.0"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@platform/sdk",
+  "version": "0.1.0",
+  "description": "Typed TypeScript client for the capability platform API",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "bun run ../../tooling/scripts/build-sdk.ts"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "0.99.0",
+    "@platform/constants": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/streams": "workspace:*",
+    "@platform/types": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}

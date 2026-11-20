@@ -1,0 +1,23 @@
+schema: spec-driven
+context: |
+  Bun TypeScript monorepo. One capability projects to HTTP, MCP, OpenAPI, SDK, skills and documentation.
+  Follow AGENTS.md and DEV_RULES.md. Work only on user requirements recorded in an open change.
+  Constants belong in packages/constants; text in packages/messages; Zod shapes in packages/types;
+  URLs, hosts and origins in packages/config. No comments or inline suppressions. Nest at most twice.
+  Product functions are async unless explicitly allowed. Use bounded all from @platform/util.
+  All tests and helpers live in testing. Use flat factory cases with two positive and two negative cases.
+  Product coverage blocks below 100% of lines and functions. Behavior documentation comes from passing scenarios.
+  Run bun run verify and strict OpenSpec validation; never skip hooks. Preserve unrelated working tree edits.
+rules:
+  proposal:
+    - Record the user's requirement and distinguish decisions from open questions.
+    - Name affected capabilities and keep withdrawn alternatives out of the intended behavior.
+  specs:
+    - Use existing requirement headings exactly for MODIFIED and REMOVED operations.
+    - Use ADDED for absent requirements and include the full changed requirement with scenarios.
+    - Main specs need a meaningful Purpose. Artifact readiness is not implementation proof.
+  design:
+    - Explain scope, tradeoffs and evidence. Do not assume unresolved user decisions.
+  tasks:
+    - Give each task a proving command and tick it only after its output has been observed.
+    - Include regression tests, full verification, skill updates and archive validation.

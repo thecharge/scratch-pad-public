@@ -1,0 +1,16 @@
+{
+  "name": "@platform/security",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "hono": "^4.13.14",
+    "@platform/streams": "workspace:*",
+    "@platform/types": "workspace:*"
+  }
+}

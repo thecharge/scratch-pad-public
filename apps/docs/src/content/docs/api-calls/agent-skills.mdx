@@ -1,0 +1,552 @@
+---
+title: "Giving an agent the skills of the platform"
+description: "Skills are written in a package or generated from the capabilities. The skills tools list them and return their files, so an agent that does not read skill resources can use them. A caller sees only the skills its token allows. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Skills are written in a package or generated from the capabilities. The skills tools list them and return their files, so an agent that does not read skill resources can use them. A caller sees only the skills its token allows. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 10 step(s). 10 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: List the skills without a token
+
+Flag: **PASSED**
+
+Where: GET /v1/skills
+
+Action: Call skills.list to List the agent skills the caller may read. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "nextPageToken": "",
+  "skills": [
+    {
+      "description": "Operations on books (1 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "books",
+      "uri": "skill://books/SKILL.md"
+    },
+    {
+      "description": "Operations on config (1 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "config",
+      "uri": "skill://config/SKILL.md"
+    },
+    {
+      "description": "Operations on skills (2 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "skills",
+      "uri": "skill://skills/SKILL.md"
+    },
+    {
+      "description": "Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.",
+      "digest": "sha256:[redacted]",
+      "name": "working-with-books",
+      "uri": "skill://working-with-books/SKILL.md"
+    }
+  ]
+}
+```
+
+### HTTP: Read the skill about books, which is written in a package
+
+Flag: **PASSED**
+
+Where: GET /v1/skills/working-with-books
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills/working-with-books' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```text
+{
+  "description": "Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: working-with-books\ndescription: Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.\nmetadata:\n  auth: none\n---\n\n# Working with books\n\nEvery book belongs to a publisher. A book name has the form `publishers/{publisher}/books/{book}`, for example `publishers/acme/books/dune`. A publisher name is `publishers/{publisher}`.\n\nThe same operation is an HTTP route and an MCP tool with the same input. The tool id is the operation id: `books.get`, `books.list`, `books.create`, `books.update`, `books.delete`, `books.undelete`, `books.archive`, `books.batchGet`, `books.count`.\n\n## Access\n\n| Operation                                      | Needs a token | Scope   |\n| ---------------------------------------------- | ------------- | ------- |\n| `books.get`                                    | no            | none    |\n| `books.list`, `books.batchGet`                 | yes           | `read`  |\n| `books.create`, `books.update`, `books.delete` | yes           | `write` |\n| `books.undelete`, `books.archive`              | yes           | `write` |\n| `books.count`                                  | yes           | `read`  |\n\nA tool you are not allowed to call is not listed. If a tool you expect is missing, the token lacks the scope.\n\n## Steps\n\n1. Find books: call `books.list` with `parent` set to the publisher name. Pass `pageSize` to limit the page and pass the returned `nextPageToken` as `pageToken` to read the next page. An empty `nextPageToken` means the last page.\n2. Read one book: call `books.get` with `name`. Use `view` to ask for the basic fields only.\n3. Create a book: call `books.create` with `parent`, `bookId` and `title`. `author` and `authorEmail` are optional. Send a UUID as `requestId` so a retry does not create a second book.\n4. Change a book: call `books.update` with `name`, the changed fields and `updateMask` naming them. Pass `etag` from the last read to stop a write over a newer change.\n5. Remove a book: call `books.delete` with `name`. The book is soft deleted and `books.undelete` brings it back. `books.list` hides deleted books unless `showDeleted` is true.\n\nRead [the field reference](references/fields.md) for the fields of a book and the errors you can expect.\n",
+      "path": "SKILL.md"
+    },
+    {
+      "content": "# Book fields and errors\n\n## Fields of a book\n\n| Field                                                 | Meaning                                                  |\n| ----------------------------------------------------- | -------------------------------------------------------- |\n| `name`                                                | Output only. `publishers/{publisher}/books/{book}`       |\n| `title`                                               | Required when you create a book                          |\n| `author`                                              | Optional                                                 |\n| `authorEmail`                                         | Optional. Removed from the answer unless you hold `read` |\n| `state`                                               | Output only. `ACTIVE` or `ARCHIVED`                      |\n| `createTime`, `updateTime`, `deleteTime`, `purgeTime` | Output only timestamps                                   |\n| `etag`                                                | Output only. Send it back to guard an update or delete   |\n\n## Errors you can expect\n\n| Reason                  | Cause                                 | What to do                                      |\n| ----------------------- | ------------------------------------- | ----------------------------------------------- |\n| `INVALID_RESOURCE_NAME` | The name does not match the pattern   | Build it as `publishers/{publisher}/books/{id}` |\n| `RESOURCE_NOT_FOUND`    | No such book                          | Check the name; the book may be deleted         |\n| `ETAG_MISMATCH`         | The book changed after you read it    | Read it again and repeat the change             |\n| `INSUFFICIENT_SCOPE`    | The token lacks `read` or `write`     | Ask for a token with the scope                  |\n| `INVALID_PAGE_TOKEN`    | The page token is not from this query | Start again without `pageToken`                 |\n",
+      "path": "references/fields.md"
+    }
+  ],
+  "name": "working-with-books",
+  "uri": "skill://working-with-books/SKILL.md"
+}
+```
+
+### HTTP: A reader cannot read the skill for administrators
+
+Flag: **PASSED**
+
+Where: GET /v1/skills/operating-the-service
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read.
+
+Expected result: The call fails with the reason RESOURCE_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills/operating-the-service' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "RESOURCE_NOT_FOUND"
+      }
+    ],
+    "message": "The resource skills/operating-the-service was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### HTTP: An administrator reads it
+
+Flag: **PASSED**
+
+Where: GET /v1/skills/operating-the-service
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills/operating-the-service' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "description": "Look at the running service and change its public configuration as an administrator. Use when a task needs request statistics, recent request events or a new banner text. Needs the admin scope.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: operating-the-service\ndescription: Look at the running service and change its public configuration as an administrator. Use when a task needs request statistics, recent request events or a new banner text. Needs the admin scope.\nmetadata:\n  auth: required\n  scopes: admin\n---\n\n# Operating the service\n\nEverything here needs a token with the `admin` scope. A caller without it is not offered this skill.\n\n## Steps\n\n1. Read the statistics: call `stats.get` with `name` set to `stats`. The answer holds `total`, `errors`, `cacheHits` and, per capability, a `count`.\n2. Read recent request events: call `logs.list`. Pass `limit` to bound the number of events (100 by default, 500 at most), `kind` to keep one kind of event (`request`, `decision`, `error`, `cache` or `mask`) and `capability` to keep the events of one capability, for example `books.list`.\n3. Read the public configuration: call `config.get` with `name` set to `config`. No token is needed for this call.\n4. Change the configuration: call `config.update` with `name` set to `config` and `bannerText`, `pageSizeDefault` or both. Only the fields you send change.\n\n## Notes\n\n- The statistics and the events are kept in memory since the server started, so a restart empties them. The server keeps the last 500 events.\n- The configuration is public: every caller sees the banner text you set.\n",
+      "path": "SKILL.md"
+    }
+  ],
+  "name": "operating-the-service",
+  "uri": "skill://operating-the-service/SKILL.md"
+}
+```
+
+### HTTP: A skill that does not exist is not found
+
+Flag: **PASSED**
+
+Where: GET /v1/skills/nothing
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read.
+
+Expected result: The call fails with the reason RESOURCE_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills/nothing' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "RESOURCE_NOT_FOUND"
+      }
+    ],
+    "message": "The resource skills/nothing was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### MCP: List the skills without a token
+
+Flag: **PASSED**
+
+Where: tools/call skills.list
+
+Action: Call skills.list to List the agent skills the caller may read. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.list",
+    "arguments": {}
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "nextPageToken": "",
+  "skills": [
+    {
+      "description": "Operations on books (1 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "books",
+      "uri": "skill://books/SKILL.md"
+    },
+    {
+      "description": "Operations on config (1 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "config",
+      "uri": "skill://config/SKILL.md"
+    },
+    {
+      "description": "Operations on skills (2 capabilities, called as tools or over HTTP).",
+      "digest": "sha256:[redacted]",
+      "name": "skills",
+      "uri": "skill://skills/SKILL.md"
+    },
+    {
+      "description": "Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.",
+      "digest": "sha256:[redacted]",
+      "name": "working-with-books",
+      "uri": "skill://working-with-books/SKILL.md"
+    }
+  ]
+}
+```
+
+### MCP: Read the skill about books, which is written in a package
+
+Flag: **PASSED**
+
+Where: tools/call skills.get
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.get",
+    "arguments": {
+      "name": "skills/working-with-books"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```text
+{
+  "description": "Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: working-with-books\ndescription: Read, create, change and remove books of a publisher through the platform API, by HTTP or as MCP tools. Use when a task needs book data, names like publishers/acme/books/dune, paging, soft delete or an etag.\nmetadata:\n  auth: none\n---\n\n# Working with books\n\nEvery book belongs to a publisher. A book name has the form `publishers/{publisher}/books/{book}`, for example `publishers/acme/books/dune`. A publisher name is `publishers/{publisher}`.\n\nThe same operation is an HTTP route and an MCP tool with the same input. The tool id is the operation id: `books.get`, `books.list`, `books.create`, `books.update`, `books.delete`, `books.undelete`, `books.archive`, `books.batchGet`, `books.count`.\n\n## Access\n\n| Operation                                      | Needs a token | Scope   |\n| ---------------------------------------------- | ------------- | ------- |\n| `books.get`                                    | no            | none    |\n| `books.list`, `books.batchGet`                 | yes           | `read`  |\n| `books.create`, `books.update`, `books.delete` | yes           | `write` |\n| `books.undelete`, `books.archive`              | yes           | `write` |\n| `books.count`                                  | yes           | `read`  |\n\nA tool you are not allowed to call is not listed. If a tool you expect is missing, the token lacks the scope.\n\n## Steps\n\n1. Find books: call `books.list` with `parent` set to the publisher name. Pass `pageSize` to limit the page and pass the returned `nextPageToken` as `pageToken` to read the next page. An empty `nextPageToken` means the last page.\n2. Read one book: call `books.get` with `name`. Use `view` to ask for the basic fields only.\n3. Create a book: call `books.create` with `parent`, `bookId` and `title`. `author` and `authorEmail` are optional. Send a UUID as `requestId` so a retry does not create a second book.\n4. Change a book: call `books.update` with `name`, the changed fields and `updateMask` naming them. Pass `etag` from the last read to stop a write over a newer change.\n5. Remove a book: call `books.delete` with `name`. The book is soft deleted and `books.undelete` brings it back. `books.list` hides deleted books unless `showDeleted` is true.\n\nRead [the field reference](references/fields.md) for the fields of a book and the errors you can expect.\n",
+      "path": "SKILL.md"
+    },
+    {
+      "content": "# Book fields and errors\n\n## Fields of a book\n\n| Field                                                 | Meaning                                                  |\n| ----------------------------------------------------- | -------------------------------------------------------- |\n| `name`                                                | Output only. `publishers/{publisher}/books/{book}`       |\n| `title`                                               | Required when you create a book                          |\n| `author`                                              | Optional                                                 |\n| `authorEmail`                                         | Optional. Removed from the answer unless you hold `read` |\n| `state`                                               | Output only. `ACTIVE` or `ARCHIVED`                      |\n| `createTime`, `updateTime`, `deleteTime`, `purgeTime` | Output only timestamps                                   |\n| `etag`                                                | Output only. Send it back to guard an update or delete   |\n\n## Errors you can expect\n\n| Reason                  | Cause                                 | What to do                                      |\n| ----------------------- | ------------------------------------- | ----------------------------------------------- |\n| `INVALID_RESOURCE_NAME` | The name does not match the pattern   | Build it as `publishers/{publisher}/books/{id}` |\n| `RESOURCE_NOT_FOUND`    | No such book                          | Check the name; the book may be deleted         |\n| `ETAG_MISMATCH`         | The book changed after you read it    | Read it again and repeat the change             |\n| `INSUFFICIENT_SCOPE`    | The token lacks `read` or `write`     | Ask for a token with the scope                  |\n| `INVALID_PAGE_TOKEN`    | The page token is not from this query | Start again without `pageToken`                 |\n",
+      "path": "references/fields.md"
+    }
+  ],
+  "name": "working-with-books",
+  "uri": "skill://working-with-books/SKILL.md"
+}
+```
+
+### MCP: A reader cannot read the skill for administrators
+
+Flag: **PASSED**
+
+Where: tools/call skills.get
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read.
+
+Expected result: The call fails with the reason RESOURCE_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.get",
+    "arguments": {
+      "name": "skills/operating-the-service"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource skills/operating-the-service was not found.\",\n  \"metadata\": {},\n  \"reason\": \"RESOURCE_NOT_FOUND\",\n  \"status\": \"NOT_FOUND\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: An administrator reads it
+
+Flag: **PASSED**
+
+Where: tools/call skills.get
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.get",
+    "arguments": {
+      "name": "skills/operating-the-service"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "description": "Look at the running service and change its public configuration as an administrator. Use when a task needs request statistics, recent request events or a new banner text. Needs the admin scope.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: operating-the-service\ndescription: Look at the running service and change its public configuration as an administrator. Use when a task needs request statistics, recent request events or a new banner text. Needs the admin scope.\nmetadata:\n  auth: required\n  scopes: admin\n---\n\n# Operating the service\n\nEverything here needs a token with the `admin` scope. A caller without it is not offered this skill.\n\n## Steps\n\n1. Read the statistics: call `stats.get` with `name` set to `stats`. The answer holds `total`, `errors`, `cacheHits` and, per capability, a `count`.\n2. Read recent request events: call `logs.list`. Pass `limit` to bound the number of events (100 by default, 500 at most), `kind` to keep one kind of event (`request`, `decision`, `error`, `cache` or `mask`) and `capability` to keep the events of one capability, for example `books.list`.\n3. Read the public configuration: call `config.get` with `name` set to `config`. No token is needed for this call.\n4. Change the configuration: call `config.update` with `name` set to `config` and `bannerText`, `pageSizeDefault` or both. Only the fields you send change.\n\n## Notes\n\n- The statistics and the events are kept in memory since the server started, so a restart empties them. The server keeps the last 500 events.\n- The configuration is public: every caller sees the banner text you set.\n",
+      "path": "SKILL.md"
+    }
+  ],
+  "name": "operating-the-service",
+  "uri": "skill://operating-the-service/SKILL.md"
+}
+```
+
+### MCP: A skill that does not exist is not found
+
+Flag: **PASSED**
+
+Where: tools/call skills.get
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: read.
+
+Expected result: The call fails with the reason RESOURCE_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.get",
+    "arguments": {
+      "name": "skills/nothing"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource skills/nothing was not found.\",\n  \"metadata\": {},\n  \"reason\": \"RESOURCE_NOT_FOUND\",\n  \"status\": \"NOT_FOUND\"\n}",
+    "type": "text"
+  }
+]
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

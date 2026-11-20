@@ -1,0 +1,178 @@
+---
+title: "Upload and download private assets"
+description: "Stream a file with its media type and SHA-256 checksum. Read your metadata to obtain a signed download URL. Replace the example checksum with the SHA-256 of your file. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Stream a file with its media type and SHA-256 checksum. Read your metadata to obtain a signed download URL. Replace the example checksum with the SHA-256 of your file. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 5 step(s). 5 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Call assets.create to upload a 12 MiB file and verify its checksum
+
+Flag: **PASSED**
+
+Where: POST /v1/assets
+
+Action: Call assets.create to upload a 12 MiB file and verify its checksum
+
+Expected result: The recorded request passes every asset check.
+
+Checks:
+
+- PASSED: The recorded request passes every asset check.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/octet-stream' \
+  --header 'x-content-sha256: [redacted]' \
+  --data-binary '@asset.bin'
+```
+
+Response ():
+
+```json
+{"sizeBytes":12582912,"sha256":"[redacted]","mediaType":"application/octet-stream","name":"assets/a-00000000-0000-4000-8000-000000000001","uri":"asset://a-00000000-0000-4000-8000-000000000001","createTime":"2001-01-01T00:00:00.000Z"}
+200
+```
+
+### HTTP: Call assets.list to find your uploaded asset
+
+Flag: **PASSED**
+
+Where: GET /v1/assets
+
+Action: Call assets.list to find your uploaded asset
+
+Expected result: The recorded request passes every asset check.
+
+Checks:
+
+- PASSED: The recorded request passes every asset check.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response ():
+
+```json
+{"assets":[{"sizeBytes":12582912,"sha256":"[redacted]","mediaType":"application/octet-stream","name":"assets/a-00000000-0000-4000-8000-000000000001","uri":"asset://a-00000000-0000-4000-8000-000000000001","createTime":"2001-01-01T00:00:00.000Z"}],"nextPageToken":""}
+200
+```
+
+### HTTP: Call assets.get to read your metadata and obtain a signed download URL
+
+Flag: **PASSED**
+
+Where: GET /v1/assets/a-00000000-0000-4000-8000-000000000001
+
+Action: Call assets.get to read your metadata and obtain a signed download URL
+
+Expected result: The recorded request passes every asset check.
+
+Checks:
+
+- PASSED: The recorded request passes every asset check.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response ():
+
+```json
+{"sizeBytes":12582912,"sha256":"[redacted]","mediaType":"application/octet-stream","name":"assets/a-00000000-0000-4000-8000-000000000001","uri":"asset://a-00000000-0000-4000-8000-000000000001","createTime":"2001-01-01T00:00:00.000Z","downloadUrl":"<signed download URL>"}
+200
+```
+
+### HTTP: Download an exact range using the signed URL from your metadata
+
+Flag: **PASSED**
+
+Where: GET $DOWNLOAD_URL
+
+Action: Download an exact range using the signed URL from your metadata
+
+Expected result: The recorded request passes every asset check.
+
+Checks:
+
+- PASSED: The recorded request passes every asset check.
+
+Request:
+
+```http
+DOWNLOAD_URL=$(curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000001' -H 'accept: application/json' -H 'authorization: Bearer <YOUR_ACCESS_TOKEN>' | jq -r '.downloadUrl')
+ curl -H 'range: bytes=5242878-5242883' "$DOWNLOAD_URL"
+```
+
+Response ():
+
+```json
+AAAAAA
+206
+```
+
+### HTTP: Refuse an upload above the configured 20 MB limit
+
+Flag: **PASSED**
+
+Where: POST /v1/assets
+
+Action: Refuse an upload above the configured 20 MB limit
+
+Expected result: The recorded request passes every asset check.
+
+Checks:
+
+- PASSED: The recorded request passes every asset check.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/octet-stream' \
+  --header 'x-content-sha256: [redacted]' \
+  --data-binary '@oversize.bin'
+```
+
+Response ():
+
+```json
+{"error":{"code":400,"message":"The asset exceeds the 20000000 byte limit.","status":"INVALID_ARGUMENT","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"VALIDATION_FAILED","domain":"api.localhost"}]}}
+400
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

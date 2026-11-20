@@ -1,0 +1,25 @@
+{
+  "name": "@platform/mcp-adapter",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/hono": "2.0.2",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@platform/aip": "workspace:*",
+    "@platform/auth": "workspace:*",
+    "@platform/cache": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/skill-protocol": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "hono": "^4.13.14",
+    "zod": "^4.0.0"
+  }
+}

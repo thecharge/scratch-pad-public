@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "testing/**/*.ts",
+    "testing/**/*.tsx",
+    "tooling/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/dist",
+    "**/.astro",
+    "apps/docs",
+    "packages/sdk",
+    "testing/integration/sdk",
+    "testing/unit/sdk/units-client.test.ts",
+    "testing/unit/sdk/follow.test.ts"
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./apps/console/src/*"]
+    }
+  }
+}

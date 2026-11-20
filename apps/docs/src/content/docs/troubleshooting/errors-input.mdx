@@ -1,0 +1,815 @@
+---
+title: "Errors when the input is wrong"
+description: "The API checks every input field and says which rule the input broke. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+The API checks every input field and says which rule the input broke. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: Troubleshooting. This page has 16 step(s). 16 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book with an invalid id
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=Not+Valid%21
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_RESOURCE_ID.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_RESOURCE_ID
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=Not+Valid%21' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_RESOURCE_ID"
+      }
+    ],
+    "message": "The id Not Valid! is not valid.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Create a book without a title
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason REQUIRED_FIELD_MISSING.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is REQUIRED_FIELD_MISSING
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "REQUIRED_FIELD_MISSING"
+      }
+    ],
+    "message": "The field title is required.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Send a value of the wrong type
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?pageSize=many
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason VALIDATION_FAILED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is VALIDATION_FAILED
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?pageSize=many' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "VALIDATION_FAILED"
+      }
+    ],
+    "message": "The request is not valid: pageSize: Invalid input: expected number, received string.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: List with a filter that cannot be read
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?filter=nothing%3Ax
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_FILTER.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_FILTER
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?filter=nothing%3Ax' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_FILTER"
+      }
+    ],
+    "message": "The filter is not valid: nothing.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: List ordered by a field that does not exist
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?orderBy=nothing
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_ORDER_BY.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_ORDER_BY
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?orderBy=nothing' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_ORDER_BY"
+      }
+    ],
+    "message": "The orderBy value is not valid: nothing.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: List with a page token that is not valid
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?pageToken=garbage
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_PAGE_TOKEN.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_PAGE_TOKEN
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?pageToken=garbage' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_PAGE_TOKEN"
+      }
+    ],
+    "message": "The page token is not valid for this request.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Send a field the call does not know
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason UNKNOWN_FIELD.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is UNKNOWN_FIELD
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com","bogusField":1}'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "UNKNOWN_FIELD"
+      }
+    ],
+    "message": "The field bogusField is not part of this request.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Create more books in one batch than the limit allows
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books:batchCreate
+
+Action: Call books.batchCreate to Create several books atomically. Token scopes: read, write.
+
+Expected result: The call fails with the reason BATCH_TOO_LARGE.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is BATCH_TOO_LARGE
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"requests":[{"bookId":"bulk","title":"Bulk"},{"bookId":"bulk","title":"Bulk"}]}'
+```
+
+This body is truncated for the page. The call really sent 1001 items and the page shows the first 2.
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "BATCH_TOO_LARGE"
+      }
+    ],
+    "message": "A batch may contain at most 1000 items.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: List with a page size below zero
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?pageSize=-1
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_PAGE_SIZE.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_PAGE_SIZE
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?pageSize=-1' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_PAGE_SIZE"
+      }
+    ],
+    "message": "The page size must not be negative.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### MCP: Create a book with an invalid id
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_RESOURCE_ID.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_RESOURCE_ID
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "Not Valid!",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The id Not Valid! is not valid.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_RESOURCE_ID\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Create a book without a title
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason REQUIRED_FIELD_MISSING.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is REQUIRED_FIELD_MISSING
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The field title is required.\",\n  \"metadata\": {},\n  \"reason\": \"REQUIRED_FIELD_MISSING\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Send a value of the wrong type
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason VALIDATION_FAILED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The result says: Input validation error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "pageSize": "many"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "Input validation error: Invalid arguments for tool books.list: pageSize: Invalid input: expected number, received string",
+    "type": "text"
+  }
+]
+```
+
+### MCP: List with a filter that cannot be read
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_FILTER.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_FILTER
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "filter": "nothing:x"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The filter is not valid: nothing.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_FILTER\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: List ordered by a field that does not exist
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_ORDER_BY.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_ORDER_BY
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "orderBy": "nothing"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The orderBy value is not valid: nothing.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_ORDER_BY\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: List with a page token that is not valid
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_PAGE_TOKEN.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_PAGE_TOKEN
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "pageToken": "garbage"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The page token is not valid for this request.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_PAGE_TOKEN\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: List with a page size below zero
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call fails with the reason INVALID_PAGE_SIZE.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_PAGE_SIZE
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "pageSize": -1
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The page size must not be negative.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_PAGE_SIZE\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

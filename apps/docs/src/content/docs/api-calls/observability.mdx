@@ -1,0 +1,932 @@
+---
+title: "Looking at the service from the inside"
+description: "Administrators read request statistics and the most recent request events. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Administrators read request statistics and the most recent request events. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 13 step(s). 13 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Make a call to generate traffic
+
+Flag: **PASSED**
+
+Where: GET /v1/config
+
+Action: Call config.get to Get the public configuration. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/config' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "bannerText": "Welcome",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+### HTTP: Read the statistics
+
+Flag: **PASSED**
+
+Where: GET /v1/stats
+
+Action: Call stats.get to Get request statistics. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/stats' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "byCapability": {
+    "config.get": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.002Z",
+      "lastSeen": "2001-01-01T00:00:00.002Z",
+      "totalLatencyMs": "<measured value>"
+    }
+  },
+  "cacheHits": "<measured value>",
+  "errors": "<measured value>",
+  "name": "stats",
+  "operations": {
+    "config.get|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    }
+  },
+  "process": {
+    "cpuSystemMicros": "<measured value>",
+    "cpuUserMicros": "<measured value>",
+    "eventLoopDelayMaxMs": "<measured value>",
+    "externalBytes": "<measured value>",
+    "heapCollections": "<measured value>",
+    "heapFreedBytes": "<measured value>",
+    "heapTotalBytes": "<measured value>",
+    "heapUsedBytes": "<measured value>",
+    "openStreams": "<measured value>",
+    "requestsInFlight": "<measured value>",
+    "rssBytes": "<measured value>",
+    "runningOperations": "<measured value>",
+    "startRssBytes": "<measured value>",
+    "uptimeSeconds": "<measured value>"
+  },
+  "stages": {
+    "input": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "invoke": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "negotiate": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "respond": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "rewrite": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "route": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    }
+  },
+  "total": "<measured value>"
+}
+```
+
+### HTTP: Read recent events
+
+Flag: **PASSED**
+
+Where: GET /v1/logs?pageSize=5
+
+Action: Call logs.list to List recent request events, newest first. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/logs?pageSize=5' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "events": [
+    {
+      "capability": "logs.list",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "time": "2001-01-01T00:00:00.008Z",
+      "transport": "http"
+    },
+    {
+      "cacheHit": false,
+      "capability": "stats.get",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.006Z",
+      "transport": "http"
+    },
+    {
+      "capability": "stats.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "time": "2001-01-01T00:00:00.004Z",
+      "transport": "http"
+    },
+    {
+      "cacheHit": false,
+      "capability": "config.get",
+      "kind": "request",
+      "latencyMs": 1,
+      "principalKind": "anonymous",
+      "requestId": "00000000-0000-4000-8000-000000000003",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.002Z",
+      "transport": "http"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### HTTP: Read the request events as one document
+
+Flag: **PASSED**
+
+Where: GET /v1/events
+
+Action: Call events.get to Get the recent request events, or follow them as they happen. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/events' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "events": [
+    {
+      "cacheHit": false,
+      "capability": "config.get",
+      "kind": "request",
+      "latencyMs": 1,
+      "principalKind": "anonymous",
+      "requestId": "00000000-0000-4000-8000-000000000003",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.002Z",
+      "transport": "http"
+    },
+    {
+      "capability": "stats.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "time": "2001-01-01T00:00:00.004Z",
+      "transport": "http"
+    },
+    {
+      "cacheHit": false,
+      "capability": "stats.get",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.006Z",
+      "transport": "http"
+    },
+    {
+      "capability": "logs.list",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "time": "2001-01-01T00:00:00.008Z",
+      "transport": "http"
+    },
+    {
+      "cacheHit": false,
+      "capability": "logs.list",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.010Z",
+      "transport": "http"
+    },
+    {
+      "capability": "events.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000004",
+      "time": "2001-01-01T00:00:00.012Z",
+      "transport": "http"
+    }
+  ]
+}
+```
+
+### HTTP: A reader may not read the request events
+
+Flag: **PASSED**
+
+Where: GET /v1/events
+
+Action: Call events.get to Get the recent request events, or follow them as they happen. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/events' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 403):
+
+```json
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "POLICY_DENIED"
+      }
+    ],
+    "message": "You are not allowed to call events.get.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+### HTTP: A reader may not
+
+Flag: **PASSED**
+
+Where: GET /v1/stats
+
+Action: Call stats.get to Get request statistics. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/stats' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 403):
+
+```json
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "POLICY_DENIED"
+      }
+    ],
+    "message": "You are not allowed to call stats.get.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+### MCP: Make a call to generate traffic
+
+Flag: **PASSED**
+
+Where: tools/call config.get
+
+Action: Call config.get to Get the public configuration. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "config.get",
+    "arguments": {
+      "name": "config"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "bannerText": "Welcome",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+### MCP: Read the statistics
+
+Flag: **PASSED**
+
+Where: tools/call stats.get
+
+Action: Call stats.get to Get request statistics. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "stats.get",
+    "arguments": {
+      "name": "stats"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "byCapability": {
+    "config.get": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.002Z",
+      "lastSeen": "2001-01-01T00:00:00.002Z",
+      "totalLatencyMs": "<measured value>"
+    }
+  },
+  "cacheHits": "<measured value>",
+  "errors": "<measured value>",
+  "name": "stats",
+  "operations": {},
+  "process": {
+    "cpuSystemMicros": "<measured value>",
+    "cpuUserMicros": "<measured value>",
+    "eventLoopDelayMaxMs": "<measured value>",
+    "externalBytes": "<measured value>",
+    "heapCollections": "<measured value>",
+    "heapFreedBytes": "<measured value>",
+    "heapTotalBytes": "<measured value>",
+    "heapUsedBytes": "<measured value>",
+    "openStreams": "<measured value>",
+    "requestsInFlight": "<measured value>",
+    "rssBytes": "<measured value>",
+    "runningOperations": "<measured value>",
+    "startRssBytes": "<measured value>",
+    "uptimeSeconds": "<measured value>"
+  },
+  "stages": {},
+  "total": "<measured value>"
+}
+```
+
+### MCP: Read recent events
+
+Flag: **PASSED**
+
+Where: tools/call logs.list
+
+Action: Call logs.list to List recent request events, newest first. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "logs.list",
+    "arguments": {
+      "pageSize": 5
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "events": [
+    {
+      "capability": "logs.list",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "time": "2001-01-01T00:00:00.008Z",
+      "transport": "mcp"
+    },
+    {
+      "cacheHit": false,
+      "capability": "stats.get",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.006Z",
+      "transport": "mcp"
+    },
+    {
+      "capability": "stats.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "time": "2001-01-01T00:00:00.004Z",
+      "transport": "mcp"
+    },
+    {
+      "cacheHit": false,
+      "capability": "config.get",
+      "kind": "request",
+      "latencyMs": 1,
+      "principalKind": "anonymous",
+      "requestId": "00000000-0000-4000-8000-000000000003",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.002Z",
+      "transport": "mcp"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### MCP: Read the request events as one document
+
+Flag: **PASSED**
+
+Where: tools/call events.get
+
+Action: Call events.get to Get the recent request events, or follow them as they happen. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "events.get",
+    "arguments": {
+      "name": "events"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "events": [
+    {
+      "cacheHit": false,
+      "capability": "config.get",
+      "kind": "request",
+      "latencyMs": 1,
+      "principalKind": "anonymous",
+      "requestId": "00000000-0000-4000-8000-000000000003",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.002Z",
+      "transport": "mcp"
+    },
+    {
+      "capability": "stats.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "time": "2001-01-01T00:00:00.004Z",
+      "transport": "mcp"
+    },
+    {
+      "cacheHit": false,
+      "capability": "stats.get",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000002",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.006Z",
+      "transport": "mcp"
+    },
+    {
+      "capability": "logs.list",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "time": "2001-01-01T00:00:00.008Z",
+      "transport": "mcp"
+    },
+    {
+      "cacheHit": false,
+      "capability": "logs.list",
+      "kind": "request",
+      "latencyMs": 2,
+      "principalKind": "user",
+      "requestId": "00000000-0000-4000-8000-000000000001",
+      "status": 200,
+      "time": "2001-01-01T00:00:00.010Z",
+      "transport": "mcp"
+    },
+    {
+      "capability": "events.get",
+      "kind": "decision",
+      "outcome": "allow",
+      "principalKind": "user",
+      "reason": "allowed",
+      "requestId": "00000000-0000-4000-8000-000000000004",
+      "time": "2001-01-01T00:00:00.012Z",
+      "transport": "mcp"
+    }
+  ]
+}
+```
+
+### MCP: Watch the request events for a short time
+
+Flag: **PASSED**
+
+Where: tools/call events.watch
+
+Action: Call events.watch to Watch: Get the recent request events, or follow them as they happen. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "events.watch",
+    "arguments": {
+      "name": "events",
+      "timeoutMs": 500
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "events": []
+}
+```
+
+### MCP: A reader may not read the request events
+
+Flag: **PASSED**
+
+Where: tools/call events.get
+
+Action: Call events.get to Get the recent request events, or follow them as they happen. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "events.get",
+    "arguments": {
+      "name": "events"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+{
+  "message": "Tool events.get not found"
+}
+```
+
+### MCP: A reader may not
+
+Flag: **PASSED**
+
+Where: tools/call stats.get
+
+Action: Call stats.get to Get request statistics. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "stats.get",
+    "arguments": {
+      "name": "stats"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+{
+  "message": "Tool stats.get not found"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

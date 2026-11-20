@@ -1,0 +1,17 @@
+{
+  "name": "@platform/test-framework",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./dom": "./src/dom.ts"
+  },
+  "dependencies": {
+    "@happy-dom/global-registrator": "21.0.4",
+    "@platform/config": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/types": "workspace:*",
+    "jose": "^6.2.14"
+  }
+}

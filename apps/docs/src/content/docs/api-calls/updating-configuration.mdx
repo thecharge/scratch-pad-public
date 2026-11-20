@@ -1,0 +1,290 @@
+---
+title: "An administrator updates the configuration"
+description: "Only a caller holding the admin scope may change the configuration, and everyone then sees the change. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Only a caller holding the admin scope may change the configuration, and everyone then sees the change. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 6 step(s). 6 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: A reader cannot update it
+
+Flag: **PASSED**
+
+Where: PATCH /v1/config
+
+Action: Call config.update to Update the configuration. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request PATCH 'https://localhost:8443/v1/config' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"bannerText":"No"}'
+```
+
+Response (error, HTTP 403):
+
+```json
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "POLICY_DENIED"
+      }
+    ],
+    "message": "You are not allowed to call config.update.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+### HTTP: An administrator updates the banner
+
+Flag: **PASSED**
+
+Where: PATCH /v1/config
+
+Action: Call config.update to Update the configuration. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request PATCH 'https://localhost:8443/v1/config' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"bannerText":"Back soon"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "bannerText": "Back soon",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+### HTTP: Anyone can read the new banner
+
+Flag: **PASSED**
+
+Where: GET /v1/config
+
+Action: Call config.get to Get the public configuration. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/config' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "bannerText": "Back soon",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+### MCP: A reader cannot update it
+
+Flag: **PASSED**
+
+Where: tools/call config.update
+
+Action: Call config.update to Update the configuration. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "config.update",
+    "arguments": {
+      "name": "config",
+      "bannerText": "No"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+{
+  "message": "Tool config.update not found"
+}
+```
+
+### MCP: An administrator updates the banner
+
+Flag: **PASSED**
+
+Where: tools/call config.update
+
+Action: Call config.update to Update the configuration. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "config.update",
+    "arguments": {
+      "name": "config",
+      "bannerText": "Back soon"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "bannerText": "Back soon",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+### MCP: Anyone can read the new banner
+
+Flag: **PASSED**
+
+Where: tools/call config.get
+
+Action: Call config.get to Get the public configuration. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "config.get",
+    "arguments": {
+      "name": "config"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "bannerText": "Back soon",
+  "name": "config",
+  "pageSizeDefault": 50
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

@@ -1,0 +1,16 @@
+{
+  "name": "@platform/streams",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./upload": "./src/upload.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/types": "workspace:*",
+    "zod": "^4.0.0"
+  }
+}

@@ -1,0 +1,41 @@
+FROM docker.io/library/alpine:3.23@sha256:ff7f0c727dd796aa36787bfcd9a64bf35a6ce72a73451b3359fde849b6703d63 AS build
+
+ARG GITHUB_ORIGIN
+ARG OPENSSL_VERSION=3.5.9
+ARG OPENSSL_SHA256=603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a
+ARG NGHTTP3_VERSION=1.18.0
+ARG NGHTTP3_SHA256=aad782c23d3f01bd4bb52c8bac7a553b631ef8115fd1612703df6183449fef19
+ARG NGTCP2_VERSION=1.25.0
+ARG NGTCP2_SHA256=2a34d2484ba17847a5d11965704e9dd0fac4c6d8efc75ffe1ec7de66d8c6b6fb
+ARG NGHTTP2_VERSION=1.70.0
+ARG NGHTTP2_SHA256=e05cb1388eaca3830aded4ccf20044b6e1ac1a61411dcca11b0437c4285c8bc2
+ARG CURL_VERSION=8.23.0
+ARG CURL_TAG=curl-8_23_0
+ARG CURL_SHA256=e3de77cfa6367083c776a26647fc9f633b538c06c3baa73d931a252ac8f72b49
+
+RUN apk add --no-cache build-base perl linux-headers pkgconf curl xz
+
+WORKDIR /src
+
+RUN set -eux; \
+    fetch() { curl -fsSL -o "$1" "$2"; echo "$3  $1" | sha256sum -c -; }; \
+    fetch openssl.tar.gz "${GITHUB_ORIGIN}/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz" "${OPENSSL_SHA256}"; \
+    fetch nghttp3.tar.xz "${GITHUB_ORIGIN}/ngtcp2/nghttp3/releases/download/v${NGHTTP3_VERSION}/nghttp3-${NGHTTP3_VERSION}.tar.xz" "${NGHTTP3_SHA256}"; \
+    fetch ngtcp2.tar.xz "${GITHUB_ORIGIN}/ngtcp2/ngtcp2/releases/download/v${NGTCP2_VERSION}/ngtcp2-${NGTCP2_VERSION}.tar.xz" "${NGTCP2_SHA256}"; \
+    fetch nghttp2.tar.xz "${GITHUB_ORIGIN}/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz" "${NGHTTP2_SHA256}"; \
+    fetch curl.tar.gz "${GITHUB_ORIGIN}/curl/curl/releases/download/${CURL_TAG}/curl-${CURL_VERSION}.tar.gz" "${CURL_SHA256}"; \
+    for archive in openssl.tar.gz nghttp3.tar.xz ngtcp2.tar.xz nghttp2.tar.xz curl.tar.gz; do mkdir "${archive%%.*}" && tar -xf "$archive" -C "${archive%%.*}" --strip-components=1; done
+
+RUN cd openssl && ./config --prefix=/opt/h3 --libdir=lib no-shared no-docs no-tests && make -j"$(nproc)" && make install_sw
+
+RUN cd nghttp3 && ./configure --prefix=/opt/h3 --enable-lib-only --disable-shared && make -j"$(nproc)" && make install
+
+RUN cd ngtcp2 && ./configure PKG_CONFIG_PATH=/opt/h3/lib/pkgconfig --prefix=/opt/h3 --enable-lib-only --disable-shared --with-openssl && make -j"$(nproc)" && make install
+
+RUN cd nghttp2 && ./configure --prefix=/opt/h3 --enable-lib-only --disable-shared && make -j"$(nproc)" && make install
+
+RUN cd curl && ./configure PKG_CONFIG_PATH=/opt/h3/lib/pkgconfig --prefix=/opt/h3 --disable-shared --enable-static --with-openssl=/opt/h3 --with-ngtcp2=/opt/h3 --with-nghttp3=/opt/h3 --with-nghttp2=/opt/h3 --without-zlib --without-brotli --without-zstd --without-libpsl --without-libidn2 --disable-ldap --disable-ldaps --disable-rtsp --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-mqtt --disable-manual LDFLAGS="-static" && make -j"$(nproc)" LDFLAGS="-static -all-static -L/opt/h3/lib" && make install
+
+FROM scratch
+COPY --from=build /opt/h3/bin/curl /curl
+ENTRYPOINT ["/curl"]

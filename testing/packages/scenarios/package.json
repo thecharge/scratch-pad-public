@@ -1,0 +1,34 @@
+{
+  "name": "@platform/test-scenarios",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "jose": "^6.2.14",
+    "@modelcontextprotocol/client": "2.4.0",
+    "@modelcontextprotocol/ext-tasks": "0.2.2",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@platform/api": "workspace:*",
+    "@platform/auth": "workspace:*",
+    "@platform/assets": "workspace:*",
+    "@platform/auth-better-auth": "workspace:*",
+    "@platform/capability": "workspace:*",
+    "@platform/config": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/db": "workspace:*",
+    "@platform/flags": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/sdk": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/test-framework": "workspace:*",
+    "@platform/test-custom-capability": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "@pulumi/pulumi": "3.273.0",
+    "hono": "^4.13.14",
+    "zod": "^4.0.0"
+  }
+}

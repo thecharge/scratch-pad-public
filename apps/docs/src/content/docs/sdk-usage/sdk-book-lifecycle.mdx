@@ -1,0 +1,263 @@
+---
+title: "Moving a book through its life with the SDK"
+description: "The installed package creates, reads, changes, archives, deletes and restores a book with typed calls. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+The installed package creates, reads, changes, archives, deletes and restores a book with typed calls. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: SDK usage. This page has 7 step(s). 7 passed.
+
+## Before you start
+
+- No setup is needed.
+
+## Steps
+
+### SDK: Install the built package into an empty project
+
+Flag: **PASSED**
+
+Where: An empty project folder with its own package.json
+
+Action: Install the tarball that bun pm pack made, then import the package
+
+Expected result: The package loads from the dist folder inside node_modules, not from the workspace source.
+
+Checks:
+
+- PASSED: The package resolves to node_modules/@platform/sdk/dist/index.js
+
+### SDK: Create the book Dune
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksCreate from the package
+
+Action: Call booksCreate from the installed package to create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksCreate({ client, path: {"publisher":"acme"}, query: {"bookId":"dune"}, body: {"title":"Dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"dbc27ea50178bc59\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: Read the book back
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksGet from the package
+
+Action: Call booksGet from the installed package to get a book. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksGet({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"dbc27ea50178bc59\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: Change the title with a field mask
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksUpdate from the package
+
+Action: Call booksUpdate from the installed package to change a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksUpdate({ client, path: {"publisher":"acme","book":"dune"}, query: {"updateMask":"title"}, body: {"title":"Dune Messiah"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"4c1b6ae3bc09249d\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.014Z"
+}
+```
+
+### SDK: Archive the book
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksArchive from the package
+
+Action: Call booksArchive from the installed package to archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksArchive({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"07555026c275dbca\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.019Z"
+}
+```
+
+### SDK: Delete the book
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksDelete from the package
+
+Action: Call booksDelete from the installed package to delete a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksDelete({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "deleteTime": "2001-01-01T00:00:00.024Z",
+  "etag": "\"fe2d3f625784595b\"",
+  "name": "publishers/acme/books/dune",
+  "purgeTime": "2001-01-31T00:00:00.024Z",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.025Z"
+}
+```
+
+### SDK: Restore the deleted book
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksUndelete from the package
+
+Action: Call booksUndelete from the installed package to restore a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksUndelete({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"a279056b4a8be93f\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune Messiah",
+  "updateTime": "2001-01-01T00:00:00.030Z"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

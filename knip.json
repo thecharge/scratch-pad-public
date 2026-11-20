@@ -1,0 +1,72 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["tooling/biome/*.grit"],
+      "project": ["*.ts"]
+    },
+    "packages/*": {
+      "project": ["src/**/*.ts"],
+      "ignore": ["generated/**", "openapi-ts.config.ts"],
+      "ignoreDependencies": ["zod"]
+    },
+    "packages/auth-better-auth": {
+      "entry": ["auth.cli.ts"],
+      "project": ["src/**/*.ts", "auth.cli.ts"],
+      "ignore": ["generated/**", "openapi-ts.config.ts"],
+      "ignoreDependencies": ["zod"]
+    },
+    "packages/sdk": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts"],
+      "ignore": ["generated/**", "openapi-ts.config.ts"],
+      "ignoreDependencies": ["zod"]
+    },
+    "tooling/scripts": {
+      "entry": ["*.ts"],
+      "project": ["*.ts"]
+    },
+    "apps/*": {
+      "project": ["src/**/*.ts"],
+      "ignoreDependencies": ["@modelcontextprotocol/inspector"]
+    },
+    "apps/console": {
+      "project": ["src/**/*.ts", "src/**/*.tsx"],
+      "ignoreDependencies": ["happy-dom", "tailwindcss", "lucide-react"],
+      "ignore": ["src/components/ui/**", "src/lib/utils.ts"]
+    },
+    "testing": {
+      "entry": [
+        "{unit,integration,e2e}/**/*.test.{ts,tsx}",
+        "integration/sdk/sdk-client.ts",
+        "{integration,e2e}/**/*.proxy.ts"
+      ],
+      "project": ["{unit,integration,e2e}/**/*.{ts,tsx}"]
+    },
+    "testing/packages/*": {
+      "project": ["src/**/*.{ts,tsx}"]
+    },
+    "testing/packages/scenarios": {
+      "project": ["src/**/*.ts"],
+      "entry": [
+        "src/asset-client-entry.ts",
+        "src/scoped-api-entry.ts",
+        "src/mcp-task-entry.ts",
+        "src/mcp-harness-entry.ts",
+        "src/http-api-entry.ts",
+        "src/http-alpha-entry.ts",
+        "src/sdk-protocol-entry.ts",
+        "src/sdk-integration-api.ts"
+      ]
+    },
+    "testing/packages/recorder": {
+      "project": ["src/**/*.ts"],
+      "entry": ["src/proxy-entry.ts"]
+    },
+    "testing/packages/framework": {
+      "entry": ["src/metrics-preload.ts"],
+      "project": ["src/**/*.{ts,tsx}"]
+    }
+  },
+  "ignoreDependencies": ["@secretlint/secretlint-rule-preset-recommend"]
+}

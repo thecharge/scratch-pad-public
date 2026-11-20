@@ -1,0 +1,697 @@
+---
+title: "A long-running operation"
+description: "A reindex returns an operation straight away; the caller reads the operation, waits for it, lists operations and deletes the finished one. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A reindex returns an operation straight away; the caller reads the operation, waits for it, lists operations and deletes the finished one. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 14 step(s). 14 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book to index
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Start the reindex
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books:reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### HTTP: Read the operation it returned
+
+Flag: **PASSED**
+
+Where: GET /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### HTTP: Wait until the operation is done
+
+Flag: **PASSED**
+
+Where: POST /v1/operations/op-00000000-0000-4000-8000-000000000001:wait
+
+Action: Call operations.wait to Wait for a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001:wait' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"timeout":"10s"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": true,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 1,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001",
+  "response": {
+    "count": 1
+  }
+}
+```
+
+### HTTP: List the finished operations
+
+Flag: **PASSED**
+
+Where: GET /v1/operations?filter=done+%3D+true
+
+Action: Call operations.list to List long-running operations. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations?filter=done+%3D+true' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "nextPageToken": "",
+  "operations": [
+    {
+      "done": true,
+      "metadata": {
+        "parent": "publishers/acme",
+        "processed": 1,
+        "total": 1
+      },
+      "name": "operations/op-00000000-0000-4000-8000-000000000001",
+      "response": {
+        "count": 1
+      }
+    }
+  ]
+}
+```
+
+### HTTP: Delete the finished operation
+
+Flag: **PASSED**
+
+Where: DELETE /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.delete to Delete a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request DELETE 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{}
+```
+
+### HTTP: Read the deleted operation
+
+Flag: **PASSED**
+
+Where: GET /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call fails with the reason OPERATION_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is OPERATION_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "OPERATION_NOT_FOUND"
+      }
+    ],
+    "message": "The operation operations/op-00000000-0000-4000-8000-000000000001 was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### MCP: Create a book to index
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Start the reindex
+
+Flag: **PASSED**
+
+Where: tools/call books.reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.reindex",
+    "arguments": {
+      "parent": "publishers/acme"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### MCP: Read the operation it returned
+
+Flag: **PASSED**
+
+Where: tools/call operations.get
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.get",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### MCP: Wait until the operation is done
+
+Flag: **PASSED**
+
+Where: tools/call operations.wait
+
+Action: Call operations.wait to Wait for a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.wait",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001",
+      "timeout": "10s"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": true,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 1,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001",
+  "response": {
+    "count": 1
+  }
+}
+```
+
+### MCP: List the finished operations
+
+Flag: **PASSED**
+
+Where: tools/call operations.list
+
+Action: Call operations.list to List long-running operations. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.list",
+    "arguments": {
+      "filter": "done = true"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "nextPageToken": "",
+  "operations": [
+    {
+      "done": true,
+      "metadata": {
+        "parent": "publishers/acme",
+        "processed": 1,
+        "total": 1
+      },
+      "name": "operations/op-00000000-0000-4000-8000-000000000001",
+      "response": {
+        "count": 1
+      }
+    }
+  ]
+}
+```
+
+### MCP: Delete the finished operation
+
+Flag: **PASSED**
+
+Where: tools/call operations.delete
+
+Action: Call operations.delete to Delete a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.delete",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{}
+```
+
+### MCP: Read the deleted operation
+
+Flag: **PASSED**
+
+Where: tools/call operations.get
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call fails with the reason OPERATION_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is OPERATION_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.get",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The operation operations/op-00000000-0000-4000-8000-000000000001 was not found.\",\n  \"metadata\": {},\n  \"reason\": \"OPERATION_NOT_FOUND\",\n  \"status\": \"NOT_FOUND\"\n}",
+    "type": "text"
+  }
+]
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

@@ -1,0 +1,291 @@
+---
+title: "Adding your own capability, tool and skill"
+description: "A capability you define is served as an HTTP route, an MCP tool and an OpenAPI operation from one definition. A tool-only item is an MCP tool with no HTTP route. A skill in a skill package is read through the skill tools. Each one is a normal MCP tool or skill. So it passes the same MCP conformance checks as the built-in ones. The tool is listed. It has an input schema and an output schema. A bad call gives an error result. Policy decides who sees it. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A capability you define is served as an HTTP route, an MCP tool and an OpenAPI operation from one definition. A tool-only item is an MCP tool with no HTTP route. A skill in a skill package is read through the skill tools. Each one is a normal MCP tool or skill. So it passes the same MCP conformance checks as the built-in ones. The tool is listed. It has an input schema and an output schema. A bad call gives an error result. Policy decides who sees it. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API handling. This page has 6 step(s). 6 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+
+## Steps
+
+### HTTP: Call the new capability
+
+Flag: **PASSED**
+
+Where: GET /v1/greetings/hello
+
+Action: Call greetings.get to Get a greeting. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/greetings/hello' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "text": "hello"
+}
+```
+
+### HTTP: Look for the tool-only item over HTTP
+
+Flag: **PASSED**
+
+Where: POST /v1/greetings/hello:shout
+
+Action: Call greetings.shout to Shout a greeting. Token scopes: no token.
+
+Expected result: The call fails with the reason UNKNOWN_VERB.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is UNKNOWN_VERB
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/greetings/hello:shout' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{}'
+```
+
+Response (error, HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "UNKNOWN_VERB"
+      }
+    ],
+    "message": "No method named shout exists at /v1/greetings/hello:shout.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### HTTP: Read the skill from the skill package
+
+Flag: **PASSED**
+
+Where: GET /v1/skills/greeting-guide
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/skills/greeting-guide' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "description": "Greet a person by name through the platform, by HTTP or as an MCP tool. Use when a task needs a greeting such as hello or a shouted greeting.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: greeting-guide\ndescription: Greet a person by name through the platform, by HTTP or as an MCP tool. Use when a task needs a greeting such as hello or a shouted greeting.\nmetadata:\n  auth: none\n---\n\n# Greeting guide\n\nA greeting name has the form `greetings/{greeting}`, for example `greetings/hello`.\n\nThe tool `greetings.get` returns the greeting text. It is also an HTTP route. The tool `greetings.shout` returns the same text in capital letters and exists only as an MCP tool.\n",
+      "path": "SKILL.md"
+    }
+  ],
+  "name": "greeting-guide",
+  "uri": "skill://greeting-guide/SKILL.md"
+}
+```
+
+### MCP: Call the new capability
+
+Flag: **PASSED**
+
+Where: tools/call greetings.get
+
+Action: Call greetings.get to Get a greeting. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "greetings.get",
+    "arguments": {
+      "name": "greetings/hello"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "text": "hello"
+}
+```
+
+### MCP: Call the tool-only item
+
+Flag: **PASSED**
+
+Where: tools/call greetings.shout
+
+Action: Call greetings.shout to Shout a greeting. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "greetings.shout",
+    "arguments": {
+      "name": "greetings/hello"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "text": "HELLO"
+}
+```
+
+### MCP: Read the skill from the skill package
+
+Flag: **PASSED**
+
+Where: tools/call skills.get
+
+Action: Call skills.get to Get one agent skill with its files by its resource name, for example skills/working-with-books. Token scopes: no token.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "skills.get",
+    "arguments": {
+      "name": "skills/greeting-guide"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "description": "Greet a person by name through the platform, by HTTP or as an MCP tool. Use when a task needs a greeting such as hello or a shouted greeting.",
+  "digest": "sha256:[redacted]",
+  "files": [
+    {
+      "content": "---\nname: greeting-guide\ndescription: Greet a person by name through the platform, by HTTP or as an MCP tool. Use when a task needs a greeting such as hello or a shouted greeting.\nmetadata:\n  auth: none\n---\n\n# Greeting guide\n\nA greeting name has the form `greetings/{greeting}`, for example `greetings/hello`.\n\nThe tool `greetings.get` returns the greeting text. It is also an HTTP route. The tool `greetings.shout` returns the same text in capital letters and exists only as an MCP tool.\n",
+      "path": "SKILL.md"
+    }
+  ],
+  "name": "greeting-guide",
+  "uri": "skill://greeting-guide/SKILL.md"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

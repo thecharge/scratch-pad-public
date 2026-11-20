@@ -1,0 +1,24 @@
+FROM docker.io/oven/bun:1.3.10-alpine@sha256:32f1fcccb1523960b254c4f80973bee1a910d60be000a45c20c9129a1efcffee AS build
+
+WORKDIR /src
+COPY . .
+RUN --mount=type=cache,target=/root/.bun/install/cache bun install --frozen-lockfile --ignore-scripts --filter @platform/api
+RUN bun build --target=bun --outdir=/out apps/api/src/main.ts
+
+FROM docker.io/oven/bun:1.3.10-alpine@sha256:32f1fcccb1523960b254c4f80973bee1a910d60be000a45c20c9129a1efcffee
+
+ARG PORT
+
+WORKDIR /app
+COPY --from=build /out/main.js dist/main.js
+COPY --from=build /src/packages/config/factual-urls.json factual-urls.json
+COPY --from=build /src/packages/db/drizzle drizzle
+COPY --from=build /src/packages/skills/skills packages/skills/skills
+RUN mkdir /data && chown bun:bun /data
+
+ENV APP_ENV=production
+ENV PORT=${PORT}
+ENV DATABASE_PATH=/data/app.sqlite
+USER bun
+EXPOSE ${PORT}
+CMD ["bun", "dist/main.js"]

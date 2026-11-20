@@ -1,0 +1,5 @@
+name: platform
+runtime:
+  name: bun
+main: src/program.ts
+description: The API, its reverse proxy and their networks, for every environment

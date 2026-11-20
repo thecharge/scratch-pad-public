@@ -1,0 +1,16 @@
+{
+  "name": "@platform/policy",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/types": "workspace:*"
+  },
+  "devDependencies": {
+    "zod": "^4.0.0"
+  }
+}

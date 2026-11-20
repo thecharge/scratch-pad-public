@@ -1,0 +1,212 @@
+---
+title: "Listing and reading several books with the SDK"
+description: "The installed package lists books in an order you choose and reads several books in one call. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+The installed package lists books in an order you choose and reads several books in one call. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: SDK usage. This page has 5 step(s). 5 passed.
+
+## Before you start
+
+- No setup is needed.
+
+## Steps
+
+### SDK: Install the built package into an empty project
+
+Flag: **PASSED**
+
+Where: An empty project folder with its own package.json
+
+Action: Install the tarball that bun pm pack made, then import the package
+
+Expected result: The package loads from the dist folder inside node_modules, not from the workspace source.
+
+Checks:
+
+- PASSED: The package resolves to node_modules/@platform/sdk/dist/index.js
+
+### SDK: Create the book Dune
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksCreate from the package
+
+Action: Call booksCreate from the installed package to create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksCreate({ client, path: {"publisher":"acme"}, query: {"bookId":"dune"}, body: {"title":"Dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"dbc27ea50178bc59\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: Create the book Emma
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksCreate from the package
+
+Action: Call booksCreate from the installed package to create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksCreate({ client, path: {"publisher":"acme"}, query: {"bookId":"emma"}, body: {"title":"Emma"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.010Z",
+  "etag": "\"f5e5c797d5e1f399\"",
+  "name": "publishers/acme/books/emma",
+  "state": "ACTIVE",
+  "title": "Emma",
+  "updateTime": "2001-01-01T00:00:00.010Z"
+}
+```
+
+### SDK: List the books, newest title last
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksList from the package
+
+Action: Call booksList from the installed package to list books. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksList({ client, path: {"publisher":"acme"}, query: {"orderBy":"title desc"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.010Z",
+      "etag": "\"f5e5c797d5e1f399\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.010Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.005Z",
+      "etag": "\"dbc27ea50178bc59\"",
+      "name": "publishers/acme/books/dune",
+      "state": "ACTIVE",
+      "title": "Dune",
+      "updateTime": "2001-01-01T00:00:00.005Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: Read two books in one call
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksBatchGet from the package
+
+Action: Call booksBatchGet from the installed package to read several books. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksBatchGet({ client, path: {"publisher":"acme"}, query: {"names":["publishers/acme/books/dune","publishers/acme/books/emma"]} }))
+```
+
+Result (ok):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.005Z",
+      "etag": "\"dbc27ea50178bc59\"",
+      "name": "publishers/acme/books/dune",
+      "state": "ACTIVE",
+      "title": "Dune",
+      "updateTime": "2001-01-01T00:00:00.005Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.010Z",
+      "etag": "\"f5e5c797d5e1f399\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.010Z"
+    }
+  ]
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

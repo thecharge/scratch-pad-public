@@ -1,0 +1,3 @@
+{
+  "allowedPaths": [".test.ts", ".test.tsx", "packages/sdk/generated/"]
+}

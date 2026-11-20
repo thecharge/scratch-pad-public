@@ -1,0 +1,461 @@
+---
+title: "Listing, filtering and fetching in bulk"
+description: "List a publisher's books with a filter and an order, then fetch several by name in one call. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+List a publisher's books with a filter and an order, then fetch several by name in one call. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 8 step(s). 8 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create the first book
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Create the second book
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=emma
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=emma' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Emma","author":"Jane Austen","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Jane Austen",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.007Z",
+  "etag": "\"a2f7cafdb4d7f8a3\"",
+  "name": "publishers/acme/books/emma",
+  "state": "ACTIVE",
+  "title": "Emma",
+  "updateTime": "2001-01-01T00:00:00.007Z"
+}
+```
+
+### HTTP: List ordered by title, newest filter applied
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books?orderBy=title+desc&filter=author%3AJane*
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books?orderBy=title+desc&filter=author%3AJane*' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "author": "Jane Austen",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.007Z",
+      "etag": "\"a2f7cafdb4d7f8a3\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.007Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### HTTP: Fetch both by name
+
+Flag: **PASSED**
+
+Where: GET /v1/publishers/acme/books:batchGet?names=publishers%2Facme%2Fbooks%2Fdune&names=publishers%2Facme%2Fbooks%2Femma
+
+Action: Call books.batchGet to Get several books at once. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books:batchGet?names=publishers%2Facme%2Fbooks%2Fdune&names=publishers%2Facme%2Fbooks%2Femma' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.002Z",
+      "etag": "\"7f1dfbad1003c615\"",
+      "name": "publishers/acme/books/dune",
+      "state": "ACTIVE",
+      "title": "Dune",
+      "updateTime": "2001-01-01T00:00:00.002Z"
+    },
+    {
+      "author": "Jane Austen",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.007Z",
+      "etag": "\"a2f7cafdb4d7f8a3\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.007Z"
+    }
+  ]
+}
+```
+
+### MCP: Create the first book
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Create the second book
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "emma",
+      "title": "Emma",
+      "author": "Jane Austen",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Jane Austen",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.007Z",
+  "etag": "\"a2f7cafdb4d7f8a3\"",
+  "name": "publishers/acme/books/emma",
+  "state": "ACTIVE",
+  "title": "Emma",
+  "updateTime": "2001-01-01T00:00:00.007Z"
+}
+```
+
+### MCP: List ordered by title, newest filter applied
+
+Flag: **PASSED**
+
+Where: tools/call books.list
+
+Action: Call books.list to List the books of a publisher. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.list",
+    "arguments": {
+      "parent": "publishers/acme",
+      "orderBy": "title desc",
+      "filter": "author:Jane*"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "books": [
+    {
+      "author": "Jane Austen",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.007Z",
+      "etag": "\"a2f7cafdb4d7f8a3\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.007Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### MCP: Fetch both by name
+
+Flag: **PASSED**
+
+Where: tools/call books.batchGet
+
+Action: Call books.batchGet to Get several books at once. Token scopes: read.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.batchGet",
+    "arguments": {
+      "parent": "publishers/acme",
+      "names": [
+        "publishers/acme/books/dune",
+        "publishers/acme/books/emma"
+      ]
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "books": [
+    {
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.002Z",
+      "etag": "\"7f1dfbad1003c615\"",
+      "name": "publishers/acme/books/dune",
+      "state": "ACTIVE",
+      "title": "Dune",
+      "updateTime": "2001-01-01T00:00:00.002Z"
+    },
+    {
+      "author": "Jane Austen",
+      "authorEmail": "frank@example.com",
+      "createTime": "2001-01-01T00:00:00.007Z",
+      "etag": "\"a2f7cafdb4d7f8a3\"",
+      "name": "publishers/acme/books/emma",
+      "state": "ACTIVE",
+      "title": "Emma",
+      "updateTime": "2001-01-01T00:00:00.007Z"
+    }
+  ]
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

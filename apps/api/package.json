@@ -1,0 +1,48 @@
+{
+  "name": "@platform/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./registry": "./src/registry.ts",
+    "./app": "./src/app.ts"
+  },
+  "dependencies": {
+    "@platform/aip": "workspace:*",
+    "@platform/auth": "workspace:*",
+    "@platform/auth-better-auth": "workspace:*",
+    "@platform/cache": "workspace:*",
+    "@platform/capability": "workspace:*",
+    "@platform/config": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/db": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/events": "workspace:*",
+    "@platform/flags": "workspace:*",
+    "@platform/http-adapter": "workspace:*",
+    "@platform/logger": "workspace:*",
+    "@platform/masking": "workspace:*",
+    "@platform/mcp-adapter": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/openapi": "workspace:*",
+    "@platform/pipeline": "workspace:*",
+    "@platform/policy": "workspace:*",
+    "@platform/ratelimit": "workspace:*",
+    "@platform/security": "workspace:*",
+    "@platform/skill-protocol": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/streams": "workspace:*",
+    "@platform/telemetry": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "hono": "^4.13.14",
+    "zod": "^4.0.0",
+    "@platform/assets": "workspace:*"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "2.13.0"
+  },
+  "scripts": {
+    "start": "bun run src/main.ts"
+  }
+}

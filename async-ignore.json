@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "path": "apps/console/src/auth-provider.ts",
+      "names": ["createAuthProvider"],
+      "maximum": 1,
+      "reason": "Called while the App component renders; React needs the provider synchronously."
+    },
+    {
+      "path": "apps/console/src/claims.ts",
+      "names": ["decode", "claimsOf", "hasAdminScope"],
+      "maximum": 3,
+      "reason": "hasAdminScope is called while the App component renders and decides what it draws; it and the two functions it uses stay synchronous."
+    },
+    {
+      "path": "apps/console/src/config.ts",
+      "names": ["consoleConfig"],
+      "maximum": 1,
+      "reason": "Called while the App component renders and at start-up; React needs the configuration synchronously."
+    },
+    {
+      "path": "apps/console/src/data-provider.ts",
+      "names": ["createDataProvider"],
+      "maximum": 1,
+      "reason": "Called while the App component renders; React needs the provider synchronously."
+    },
+    {
+      "path": "apps/console/src/data-provider.ts",
+      "names": ["getApiUrl"],
+      "maximum": 1,
+      "reason": "Refine DataProvider.getApiUrl must return a string, not a promise."
+    },
+    {
+      "path": "apps/console/src/lib/utils.ts",
+      "names": ["cn"],
+      "maximum": 1,
+      "reason": "Called by React components while they render to build class names."
+    },
+    {
+      "path": "apps/console/src/live-provider.ts",
+      "names": ["createLiveProvider"],
+      "maximum": 1,
+      "reason": "Called while the App component renders; React needs the provider synchronously."
+    },
+    {
+      "path": "apps/console/src/live-provider.ts",
+      "names": ["deliverTo", "subscribe", "abort", "unsubscribe"],
+      "maximum": 4,
+      "reason": "Refine LiveProvider subscribe and unsubscribe return the subscription synchronously, so the subscription it returns and the function that builds its callback stay synchronous."
+    },
+    {
+      "path": "apps/console/src/token.ts",
+      "names": ["createTokenStore", "get", "set", "clear"],
+      "maximum": 4,
+      "reason": "The token store is read while the App component renders (tokens.get), so the store and its accessors stay synchronous."
+    },
+    {
+      "path": "packages/aip/src/order-by.ts",
+      "names": ["comparatorFor", "compare", "valueAt", "compareValues"],
+      "maximum": 4,
+      "reason": "Array.prototype.sort needs a synchronous comparator, so the comparator and the helpers it calls stay synchronous."
+    },
+    {
+      "path": "packages/auth-better-auth/src/create-auth.ts",
+      "names": ["createBetterAuth", "adapterOptions"],
+      "maximum": 2,
+      "reason": "auth.cli.ts exports the auth object that the better-auth command line reads; the object stays synchronous because a promise there is not proven to work with that tool."
+    },
+    {
+      "path": "packages/events/src/bus.ts",
+      "names": ["subscribe"],
+      "maximum": 1,
+      "reason": "Called by the StatsCollector constructor, and a constructor cannot await."
+    },
+    {
+      "path": "packages/events/src/stats.ts",
+      "names": ["advance"],
+      "maximum": 1,
+      "reason": "Runs inside BoundedStore.update, whose change callback is synchronous so the read and the write stay atomic."
+    },
+    {
+      "path": "packages/messages/src/format.ts",
+      "names": ["message"],
+      "maximum": 1,
+      "reason": "Called while the console components render and by the ApiError constructor; React and a constructor need the text synchronously."
+    },
+    {
+      "path": "packages/ratelimit/src/index.ts",
+      "names": ["exhausted", "advance"],
+      "maximum": 2,
+      "reason": "Run inside BoundedStore.update, whose change callback is synchronous so the read and the write stay atomic."
+    },
+    {
+      "path": "packages/store/src/index.ts",
+      "names": ["isExpired", "read", "write", "evict"],
+      "maximum": 4,
+      "reason": "BoundedStore.update reads, changes and writes in one synchronous step so concurrent callers cannot interleave; these helpers run inside that step and must not yield."
+    },
+    {
+      "path": "packages/store/src/index.ts",
+      "names": ["lazy"],
+      "maximum": 1,
+      "reason": "Builds a loader at module level, where nothing can await; the loader it returns is async."
+    },
+    {
+      "path": "packages/streams/src/iterate.ts",
+      "names": [""],
+      "maximum": 1,
+      "reason": "The iteration protocol calls Symbol.asyncIterator synchronously and needs the iterator object at once; its next and return are asynchronous."
+    }
+  ]
+}

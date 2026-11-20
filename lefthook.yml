@@ -1,0 +1,127 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: document-scope
+      run: bun run check:run bun run tooling/scripts/document-scope.ts
+    - name: document-links
+      run: bun run check:run bun run tooling/scripts/check-document-links.ts
+    - name: openspec
+      run: bun run check:run bun run tooling/scripts/check-openspec.ts
+    - name: biome
+      glob: "*.{js,jsx,ts,tsx,json,jsonc,css,graphql}"
+      run: bun run check:run bun run tooling/scripts/strip-comments.ts {staged_files} && bun run check:run bun run tool:biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+    - name: dprint
+      glob: "*.{md,toml,yaml,yml}"
+      run: bun run check:run bun run tooling/scripts/strip-comments.ts {staged_files} && bun run check:run bun run tool:dprint fmt --staged
+      stage_fixed: true
+    - name: comments
+      run: bun run check:run bun run tooling/scripts/strip-comments.ts {staged_files}
+      stage_fixed: true
+    - name: cspell
+      run: bun run check:run bun run tool:cspell --no-progress --no-must-find-files {staged_files}
+    - name: secret-scan
+      run: bun run check:run bun run tooling/scripts/secret-scan.ts staged
+    - name: secretlint
+      run: bun run check:run bun run tool:secretlint {staged_files}
+    - name: mermaid
+      glob: "*.md"
+      run: bun run check:run bun run tooling/scripts/check-mermaid.ts {staged_files}
+    - name: biome-plugin-fixtures
+      glob: "{tooling/biome/**,biome.json,testing/unit/tooling/plugin-fixtures.test.ts}"
+      run: bun run check:run bun test testing/unit/tooling/plugin-fixtures.test.ts
+    - name: structure
+      glob: "*.{ts,tsx,yml,yaml}"
+      run: bun run check:run bun run tooling/scripts/check-structure.ts {staged_files}
+    - name: rules
+      run: bun run check:run bun run tooling/scripts/check-rules.ts
+    - name: workflows
+      glob: ".github/**"
+      run: bun run check:run bun run tooling/scripts/lint-workflows.ts
+    - name: typecheck
+      glob: "*.{ts,tsx}"
+      run: bun run check:run bunx --no-install tsc --noEmit -p tsconfig.json
+    - name: knip
+      glob: "*.{ts,tsx,json}"
+      run: bun run check:run bunx --no-install knip
+    - name: schemas
+      glob: "packages/types/**"
+      run: bun run check:run bun run tooling/scripts/check-schemas.ts
+    - name: error-cases
+      glob: "{openapi/**,apps/docs/**,testing/packages/recorder/**}"
+      run: bun run check:run bun run tooling/scripts/check-error-cases.ts
+    - name: url-literals
+      glob: "*.{ts,tsx}"
+      run: bun run check:run bun run tooling/scripts/check-url-literals.ts
+    - name: infra-files
+      glob: "{apps/infra/**,packages/config/**}"
+      run: bun run check:run bun run tooling/scripts/check-infra-files.ts
+    - name: concrete-docs
+      glob: "{apps/docs/**,testing/packages/recorder/**}"
+      run: bun run check:run bun run tooling/scripts/check-concrete-docs.ts
+    - name: interfaces
+      glob: "{apps/api/**,packages/**}"
+      run: bun run check:run --stack bun run tooling/scripts/check-interfaces.ts
+    - name: readmes
+      run: bun run check:run bun run tooling/scripts/check-readmes.ts
+    - name: tiers
+      glob: "*.test.{ts,tsx}"
+      run: bun run check:run bun run tooling/scripts/check-tiers.ts
+    - name: testing-area
+      glob: "*.{ts,tsx,json}"
+      run: bun run check:run bun run tooling/scripts/check-testing-area.ts
+    - name: agent-knowledge
+      glob: "{AGENTS.md,CLAUDE.md,DEV_RULES.md,.claude/skills/**}"
+      run: bun run check:run bun run tooling/scripts/check-agent-knowledge.ts
+    - name: async-functions
+      glob: "*.{ts,tsx}"
+      run: bun run check:run bun run tooling/scripts/check-async-functions.ts
+    - name: promise-all
+      glob: "*.{ts,tsx}"
+      run: bun run check:run bun run tooling/scripts/check-promise-all.ts
+    - name: package-graph
+      glob: "{apps/**,packages/**,tooling/scripts/check-package-graph.ts}"
+      run: bun run check:run bun run tooling/scripts/check-package-graph.ts
+    - name: skill-packages
+      glob: "{packages/skills/**,packages/skill-protocol/**,tooling/scripts/check-skill-packages.ts}"
+      run: bun run check:run bun run tooling/scripts/check-skill-packages.ts
+    - name: skills-fresh
+      run: bun run check:run bun run tooling/scripts/check-skills-fresh.ts {staged_files}
+    - name: unit-cases
+      glob: "*.{ts,tsx}"
+      run: bun run check:run bun run tooling/scripts/check-unit-cases.ts
+    - name: repo
+      run: bun run check:run bun run tooling/scripts/check-repo.ts
+    - name: migrations
+      glob: "packages/db/**"
+      run: bun run check:run bun run tooling/scripts/check-migrations.ts
+    - name: sdk
+      glob: "{openapi/**,packages/sdk/**}"
+      run: bun run check:run bun run tooling/scripts/generate-sdk.ts check
+    - name: sdk-pack
+      glob: "{packages/sdk/**,packages/constants/**,packages/types/**,packages/tsconfig.sdk-build.json,tooling/scripts/*sdk*}"
+      run: bun run check:run bun run tooling/scripts/check-sdk-pack.ts
+    - name: docs-scope
+      glob: "apps/docs/**"
+      run: bun run check:run bun run tooling/scripts/check-docs-scope.ts
+    - name: plain-language
+      glob: "apps/docs/**"
+      run: bun run check:run bun run tooling/scripts/check-plain-language.ts
+    - name: openapi
+      glob: "{packages/**,apps/**,openapi/**}"
+      run: bun run check:run bun run tooling/scripts/openapi-check.ts check
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: bun run check:run bun run tool:commitlint --edit {1}
+    - name: cspell-message
+      run: bun run check:run bun run tool:cspell --no-progress stdin://COMMIT_EDITMSG.md < {1}
+
+pre-push:
+  jobs:
+    - name: verify
+      run: bun run verify
+      use_stdin: true
+      env:
+        PLATFORM_VERIFY_PUSH: "1"

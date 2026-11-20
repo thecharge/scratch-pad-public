@@ -1,0 +1,2317 @@
+{
+  "records": [
+    {
+      "id": "S1",
+      "url": "https://raw.githubusercontent.com/aip-dev/google.aip.dev/master/aip/general/0151.md",
+      "fetchedAt": "2026-11-07T20:36:16.009380+00:00",
+      "status": 200,
+      "sha256": "eb4293bad26eefebecf225e5c669ec9d8caa8268a472db08bbe1eaa767e05347",
+      "quotes": [
+        "The response must not be a streaming response.",
+        "Individual APIs must not define their own interfaces for long-running operations to avoid non-uniformity.",
+        "Errors that prevent a long-running operation from starting must return an error response",
+        "Operations that fail during their execution phase must return an error response",
+        "A good rule of thumb for operation expiry is 30 days."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 5/5 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S2",
+      "url": "https://raw.githubusercontent.com/aip-dev/google.aip.dev/master/aip/general/0158.md",
+      "fetchedAt": "2026-11-07T20:36:16.001927+00:00",
+      "status": 200,
+      "sha256": "3275e7ac12a1f9f8b3f10e36edb47d942e83293ab5a27aa3aea3107f0f0e7b76",
+      "quotes": [
+        "The response must not be a streaming response.",
+        "If the end of the collection has been reached, the next_page_token field must be empty.",
+        "If the user specifies a negative value for page_size, the API must send an INVALID_ARGUMENT error.",
+        "If the user does not specify page_size (or specifies 0), the API chooses an appropriate default",
+        "If the user specifies page_size greater than the maximum permitted by the API, the API should coerce down to the maximum permitted page size."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 5/5 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S3",
+      "url": "https://raw.githubusercontent.com/googleapis/googleapis/master/google/longrunning/operations.proto",
+      "fetchedAt": "2026-11-07T20:36:16.008587+00:00",
+      "status": 200,
+      "sha256": "5d2e7f9eeb55b8417b50e0a536a092babd32d26e4fbeb7099c6cdcda6e16db9c",
+      "quotes": [
+        "rpc ListOperations",
+        "rpc GetOperation",
+        "rpc DeleteOperation",
+        "rpc CancelOperation",
+        "rpc WaitOperation"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 5/5 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S4",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog.md",
+      "fetchedAt": "2026-11-07T20:36:16.168871+00:00",
+      "status": 200,
+      "sha256": "280533e289ca1a638973b06f6f4d8a8aff735a3c3fe594ffb32696d63de530f6",
+      "quotes": [
+        "Remove protocol-level sessions and the Mcp-Session-Id header",
+        "Add server/discover",
+        "Replace the HTTP GET endpoint and resources/subscribe/resources/unsubscribe with subscriptions/listen",
+        "Move experimental tasks out of the core protocol and into an official extension (io.modelcontextprotocol/tasks)",
+        "Remove SSE stream resumability and message redelivery (the Last-Event-ID header and SSE event IDs)",
+        "Require standard MCP request headers (Mcp-Method, Mcp-Name)"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 6/6 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S5",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http.md",
+      "fetchedAt": "2026-11-07T20:36:16.173770+00:00",
+      "status": 200,
+      "sha256": "94dfcaf09285c9d8398c9ee0277b440f6d3051b182266c46c9b4e55864665288",
+      "quotes": [
+        "The client MUST include an Accept header listing both application/json and text/event-stream as supported content types.",
+        "the server MUST return either Content-Type: application/json (a single JSON object) or Content-Type: text/event-stream (an SSE response stream). The client MUST support both.",
+        "Removal of the GET stream endpoint.",
+        "Every POST request to the MCP endpoint MUST include an MCP-Protocol-Version header."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S6",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/subscriptions.md",
+      "fetchedAt": "2026-11-07T20:36:16.205292+00:00",
+      "status": 200,
+      "sha256": "a3e81e777bbef20d1885c274095557059125c685697abde14bfad6db570fa1e7",
+      "quotes": [
+        "subscriptions/listen opens a long-lived notification stream from the server to the client.",
+        "The server MUST NOT send notification types the client has not explicitly requested."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S7",
+      "url": "https://modelcontextprotocol.io/extensions/tasks/overview.md",
+      "fetchedAt": "2026-11-07T20:36:16.157874+00:00",
+      "status": 200,
+      "sha256": "af7048bc5af31f84754b1a0bd0392236088c621bd38d618fba443a122798c692",
+      "quotes": [
+        "MCP Tasks let servers return a durable handle instead of blocking",
+        "io.modelcontextprotocol/tasks",
+        "tasks/get",
+        "tasks/update",
+        "tasks/cancel"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 5/5 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S8",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/progress.md",
+      "fetchedAt": "2026-11-07T20:36:16.163989+00:00",
+      "status": 200,
+      "sha256": "5178234f897db0a2b015012f15a9f8790b02900b66b962f1a2519395de74bdfa",
+      "quotes": [
+        "The progress value MUST increase with each notification",
+        "notifications/progress"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S9",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/pagination.md",
+      "fetchedAt": "2026-11-07T20:36:16.213814+00:00",
+      "status": 200,
+      "sha256": "ac5c57603b3a56dd12196527ba1d3da78eba2db99a9c6f8326c8a24eaefbedd9",
+      "quotes": [
+        "Pagination in MCP uses an opaque cursor-based approach, instead of numbered pages.",
+        "clients MUST NOT assume a fixed page size"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S10",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools.md",
+      "fetchedAt": "2026-11-07T20:36:16.211651+00:00",
+      "status": 200,
+      "sha256": "ffd2f284b837a0e00b2cb0a366dfa76d90ff579b759dfdc91f9fcabb8e51e76b",
+      "quotes": [
+        "resource_link",
+        "Embedded Resources"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S11",
+      "url": "https://modelcontextprotocol.io/community/working-groups/file-uploads",
+      "fetchedAt": "2026-11-07T20:36:16.487337+00:00",
+      "status": 200,
+      "sha256": "da2655ff3a7163bec66c4d16d79556ae709fbeeee7abf921a0466e37f296350a",
+      "quotes": [
+        "define how MCP tools and elicitation requests declare file inputs",
+        "How a tool returns a file that is too large for a JSON-RPC message",
+        "The WG may evaluate approaches such as streaming, chunked transfer, or presigned upload URLs",
+        "SEP-2356: Declarative file inputs",
+        "Add file downloads to scope as a secondary item"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 5/5 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S12",
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2356.patch",
+      "fetchedAt": "2026-11-07T20:46:24.857817+00:00",
+      "status": 200,
+      "sha256": "f65504f296fd1a7c625088b655965a0a940317861a0f45eef0e372ecb16539bd",
+      "quotes": [
+        "Files are transmitted",
+        "base64"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S13",
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro",
+      "fetchedAt": "2026-11-07T20:36:16.590123+00:00",
+      "status": 200,
+      "sha256": "17bf734c7cc2b4ce2385199657ef12dda5b0adae07c5aff1fb56499ae1b7d4f1",
+      "quotes": [
+        "2026-07-28"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S14",
+      "url": "https://modelcontextprotocol.io/extensions/skills/overview.md",
+      "fetchedAt": "2026-11-08T05:46:50.570628+00:00",
+      "status": 200,
+      "sha256": "0d9e23e7f6b25790f15dfd6d57ca657bfd48eae3ed4f5d8e9986831d95d63721",
+      "quotes": [
+        "/2640-skills-extension.md) is Final.",
+        "Clients can discover available skills, retrieve their metadata, and read their contents using the existing Resources primitive.",
+        "Skill files are served through resources/read.",
+        "Servers that declare this extension MUST implement skills/list and skills/get."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S15",
+      "url": "https://modelcontextprotocol.io/seps/2640-skills-extension.md",
+      "fetchedAt": "2026-11-07T20:36:16.386914+00:00",
+      "status": 200,
+      "sha256": "72e16488444b887e90db1fc0530d882991ec4951cb1724fa59c7090c188ab14a",
+      "quotes": [
+        "This SEP has reached Final status",
+        "Servers SHOULD use the skill:// URI scheme",
+        "skill://<skill-path>/<file-path>",
+        "Each file within a skill directory is exposed as an MCP resource."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S16",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/main/README.md",
+      "fetchedAt": "2026-11-07T20:36:16.270726+00:00",
+      "status": 200,
+      "sha256": "86c3104b47e4ef7c2059a3684e2687d2a108c936249d5d2dc177f3598634ea2c",
+      "quotes": [
+        "RustFS is a high-performance, distributed object storage system built in Rust",
+        "RustFS is released under the permissible Apache 2.0 license",
+        "instead of docker, you can install the RustFS with the below command",
+        "The RustFS container runs as a non-root user rustfs (UID/GID 10001:10001)"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S17",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/main/docs/architecture/s3-compatibility-matrix.md",
+      "fetchedAt": "2026-11-07T20:36:16.284840+00:00",
+      "status": 200,
+      "sha256": "e99d1206c667614e715c6fa4377f9edc406ae7650f0a684d17e201d3dab75dd4",
+      "quotes": [
+        "Presigned GET and PUT URLs",
+        "Range and conditional reads",
+        "Multipart upload create/upload/complete/abort",
+        "It does not claim complete coverage of every standard or vendor-specific S3 behavior."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S18",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/main/LICENSE",
+      "fetchedAt": "2026-11-07T20:46:25.247990+00:00",
+      "status": 200,
+      "sha256": "8ef87773cd6df917c9cf75bdb3075d92b78ad4cdf8e51d6c98030292442524d8",
+      "quotes": [
+        "Apache License"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S19",
+      "url": "https://www.pulumi.com/docs/iac/concepts/testing/unit/",
+      "fetchedAt": "2026-11-08T05:46:50.588000+00:00",
+      "status": 200,
+      "sha256": "6b92a2d55533fbfb714da0feffc500267d84f229f11a23ea9614037f3a09f9e2",
+      "quotes": [
+        "Because mocks don\u2019t do any real work, unit tests run fast. They\u2019re also deterministic, since nothing about them depends on the behavior of an external system.",
+        "Unit tests are supported in every general-purpose"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S20",
+      "url": "https://www.pulumi.com/docs/iac/concepts/state-and-backends/",
+      "fetchedAt": "2026-11-08T05:46:50.596792+00:00",
+      "status": 200,
+      "sha256": "2c1ca97bd15d8bdee8a141725ac36a5f4156a9848e4f3e253678b683191f51cc",
+      "quotes": [
+        "or your local filesystem",
+        "You can manage state yourself with a DIY backend"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S21",
+      "url": "https://www.pulumi.com/docs/iac/concepts/stacks/",
+      "fetchedAt": "2026-11-08T05:46:50.603209+00:00",
+      "status": 200,
+      "sha256": "f552725d318900216698fa02dcc8e40091765638863a5be595f10d3ddfb55b3f",
+      "quotes": [
+        "A stack is an isolated, independently configurable instance of a Pulumi program."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S22",
+      "url": "https://opentofu.org/docs/cli/commands/test/",
+      "fetchedAt": "2026-11-07T20:36:16.711171+00:00",
+      "status": 200,
+      "sha256": "8fec076d9512c18cade09ba30cb49e7a358475e59078fc38c1b7595fa99f4f79",
+      "quotes": [
+        "tofu test [options]",
+        "*.tftest.hcl"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S23",
+      "url": "https://www.pulumi.com/registry/packages/docker/",
+      "fetchedAt": "2026-11-07T20:36:17.194955+00:00",
+      "status": 200,
+      "sha256": "e9d8038dbc0cd2a7cee438011c05f45f64f6084478c846ec34163e3b0704cbdb",
+      "quotes": [
+        "Docker Provider",
+        "Docker v5.2.2"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S24",
+      "url": "https://raw.githubusercontent.com/pulumi/pulumi/v3.273.0/LICENSE",
+      "fetchedAt": "2026-11-07T20:46:25.758346+00:00",
+      "status": 200,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "quotes": [
+        "Apache License"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S25",
+      "url": "https://raw.githubusercontent.com/pulumi/pulumi/v3.273.0/sdk/nodejs/package.json",
+      "fetchedAt": "2026-11-07T20:36:16.827293+00:00",
+      "status": 200,
+      "sha256": "c22cc5b373451d1e972b35214957a032f0a516e6dcafc9f1d6416614bde8d616",
+      "quotes": [
+        "\"version\": \"3.273.0\""
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S26",
+      "url": "https://raw.githubusercontent.com/opentofu/opentofu/v1.13.2/LICENSE",
+      "fetchedAt": "2026-11-07T20:46:26.064966+00:00",
+      "status": 200,
+      "sha256": "142b957651baf401646dd7f3d855cb7c4f6f0921d645faa27e7cb540bc33cf4c",
+      "quotes": [
+        "Mozilla Public License"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S27",
+      "url": "https://raw.githubusercontent.com/opentofu/opentofu/v1.13.2/version/VERSION",
+      "fetchedAt": "2026-11-07T20:37:10.613053+00:00",
+      "status": 200,
+      "sha256": "810ab97f4b3fccb9adf1db7959945b479635931ccc4a0243c34a41b739eae25a",
+      "quotes": [
+        "1.13.2"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S28",
+      "url": "https://raw.githubusercontent.com/pulumi/pulumi-docker/master/LICENSE",
+      "fetchedAt": "2026-11-07T20:36:16.747222+00:00",
+      "status": 200,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "quotes": [
+        "Apache License",
+        "Version 2.0, January 2004"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S29",
+      "url": "https://podman.io/docs/installation",
+      "fetchedAt": "2026-11-07T20:36:16.845261+00:00",
+      "status": 200,
+      "sha256": "5f28aba118bab497742985a353a3bfa75ce5863ea5e2af51d91c16e7be528304",
+      "quotes": [
+        "The podman package is available in the official repositories for Ubuntu 20.10 and newer",
+        "sudo apt-get -y install podman"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S30",
+      "url": "https://spec.openapis.org/oas/v3.1.0.html",
+      "fetchedAt": "2026-11-07T20:36:17.004011+00:00",
+      "status": 200,
+      "sha256": "156788f23f0e3be376b9635f70451535e4280c3227747dbdd1dd6a0e50f61f1b",
+      "quotes": [
+        "If in is \"header\" and the name field is \"Accept\", \"Content-Type\" or \"Authorization\", the parameter definition SHALL be ignored",
+        "The key is a media type or media type range"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S31",
+      "url": "https://vite.dev/config/server-options",
+      "fetchedAt": "2026-11-07T20:36:17.118783+00:00",
+      "status": 200,
+      "sha256": "a34625a0c76e39b2151a63c708070547c965df4aef9f460a2c940280acec995a",
+      "quotes": [
+        "localhost and domains under.localhost and all IP addresses are allowed by default",
+        "Set this to 0.0.0.0 or true to listen on all addresses, including LAN and public addresses",
+        "File system watcher options to pass on to chokidar",
+        "The WebSocket-related options ( protocol, host, port, path, clientPort, timeout, server ) are deprecated"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S32",
+      "url": "https://raw.githubusercontent.com/caddyserver/website/6b06285cb94fbd415df864dbd1ed12a984963582/src/docs/markdown/caddyfile/directives/reverse_proxy.md",
+      "fetchedAt": "2026-11-07T20:36:16.960179+00:00",
+      "status": 200,
+      "sha256": "5a18aff58be22b0fae19995a8dabbb1393ecabf2e2fa4b194b5438f6106a88ed",
+      "quotes": [
+        "The proxy also supports WebSocket connections, performing the HTTP upgrade request then transitioning the connection to a bidirectional tunnel"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S33",
+      "url": "https://docs.astro.build/en/reference/cli-reference/",
+      "fetchedAt": "2026-11-07T20:36:17.058696+00:00",
+      "status": 200,
+      "sha256": "c596d147e4998ad7927c1fc9ef4fc60178e373ea5df84a2a21285e3c13eb0afb",
+      "quotes": [
+        "--host [optional host address]",
+        "--allowed-hosts"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S34",
+      "url": "https://docs.podman.io/en/latest/markdown/podman-run.1.html",
+      "fetchedAt": "2026-11-07T20:36:17.103922+00:00",
+      "status": 200,
+      "sha256": "9a24002566287e3af6b347f882a378e849686b5d4e5b92fd7c6c0ce893d338c2",
+      "quotes": [
+        "keep-id $UID $UID (Map user account to same UID within container.)"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S35",
+      "url": "https://github.com/rustfs/rustfs/pull/8183.patch",
+      "fetchedAt": "2026-11-07T20:46:26.993235+00:00",
+      "status": 200,
+      "sha256": "2e34ef2b55b4d11588e9360e463d84b6690d559597fe8ce477d334c591f12800",
+      "quotes": [
+        "RUSTFS_WEBSITE_DOMAINS"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S36",
+      "url": "https://github.com/rustfs/rustfs/pull/8183.patch",
+      "fetchedAt": "2026-11-07T20:46:27.704544+00:00",
+      "status": 200,
+      "sha256": "2e34ef2b55b4d11588e9360e463d84b6690d559597fe8ce477d334c591f12800",
+      "quotes": [
+        "Website requests are anonymous.",
+        "Grant `s3:GetObject` through the bucket policy"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S37",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/1.0.1/Cargo.toml",
+      "fetchedAt": "2026-11-07T20:36:17.048979+00:00",
+      "status": 200,
+      "sha256": "f2e0ea9ece0f233b010d1203260cb749cc2e4bdd7cd55c855d2c7e62d5416b55",
+      "quotes": [
+        "version = \"1.0.1\""
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S38",
+      "url": "https://bun.com/docs/runtime/nodejs-compat",
+      "fetchedAt": "2026-11-07T20:36:17.288066+00:00",
+      "status": 200,
+      "sha256": "0842789523e3cc9e8f8c7ec18e1329c75dc17ce8fcfef9e233978527a8e68ace",
+      "quotes": [
+        "Bun never emits gc, dns or resource entries",
+        "eventLoopUtilization() always returns zeros",
+        "monitorEventLoopDelay(), createHistogram(), timerify() and PerformanceObserver",
+        "GCProfiler and startupSnapshot are implemented"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 4/4 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S39",
+      "url": "https://raw.githubusercontent.com/oven-sh/bun/bun-v1.4.4/package.json",
+      "fetchedAt": "2026-11-07T20:36:17.092513+00:00",
+      "status": 200,
+      "sha256": "68f7347c90102f4d394f9188fde96afc882cdb8871321d3ed13678002eaa3b35",
+      "quotes": [
+        "\"version\": \"1.4.4\""
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S40",
+      "url": "https://raw.githubusercontent.com/oven-sh/bun/bun-v1.3.10/docs/runtime/s3.mdx",
+      "fetchedAt": "2026-11-07T20:36:17.127864+00:00",
+      "status": 200,
+      "sha256": "4e87d0024447e716473494f7242026be989cdc42d78732ee768196671fb86ecc",
+      "quotes": [
+        "Bun automatically handles multipart uploads for large files"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S41",
+      "url": "https://raw.githubusercontent.com/containers/common/v0.50.1/libnetwork/netavark/ipam.go",
+      "fetchedAt": "2026-11-07T20:36:17.141423+00:00",
+      "status": 200,
+      "sha256": "aa7a8b5a8a932b5ba90054e5ebe30c98f79013db82044ae4dfd4344ed0738e6a",
+      "quotes": [
+        "Each network has their own bucket"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S42",
+      "url": "https://raw.githubusercontent.com/modelcontextprotocol/ext-tasks/main/specification/2026-07-28/tasks.md",
+      "fetchedAt": "2026-11-07T20:36:17.145578+00:00",
+      "status": 200,
+      "sha256": "5fc22b9b5ff248703927c69855f751a061c2d6170f4dc3923204452f859f91a5",
+      "quotes": [
+        "type CreateTaskResult = Result & Task;"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S43",
+      "url": "https://raw.githubusercontent.com/aip-dev/google.aip.dev/master/aip/general/0193.md",
+      "fetchedAt": "2026-11-07T20:36:17.161303+00:00",
+      "status": 200,
+      "sha256": "d76399f08a3a01256f75f567596e95f57eec9deb6f6f3b28333d80e8f012018a",
+      "quotes": [
+        "google.rpc.Status"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S44",
+      "url": "https://raw.githubusercontent.com/containers/podman/v4.9.3/docs/source/markdown/podman-run.1.md.in",
+      "fetchedAt": "2026-11-07T20:36:17.374069+00:00",
+      "status": 200,
+      "sha256": "bc9ad37ca2677716ae7f9b8c1062e3a9d1921b8ecd71d92a2f5d07df2da37dbf",
+      "quotes": [
+        "processes running in the container run as the user's UID"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S45",
+      "url": "https://raw.githubusercontent.com/nodejs/docker-node/main/README.md",
+      "fetchedAt": "2026-11-07T20:36:17.395350+00:00",
+      "status": 200,
+      "sha256": "beaa1d8fac6203da4032d91c9a02957d6083a86be8e05ed3a603c817638c082a",
+      "quotes": [
+        "The official Node.js docker image"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S46",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/1.0.4/README.md",
+      "fetchedAt": "2026-11-07T20:36:17.511613+00:00",
+      "status": 200,
+      "sha256": "af10e6431c914217c6e99a260f750ba844b59d592d06e1a9b029acc32455a3eb",
+      "quotes": [
+        "10001:10001"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S47",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/1.0.4/.github/workflows/docker.yml",
+      "fetchedAt": "2026-11-07T20:36:17.434225+00:00",
+      "status": 200,
+      "sha256": "1cb0446ce0faa88583619419de29a62dcd71a7bdfb0ac58f206c09f48bfc32b6",
+      "quotes": [
+        "REGISTRY_DOCKERHUB: rustfs/rustfs"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S48",
+      "url": "https://raw.githubusercontent.com/rustfs/rustfs/1.0.4/Dockerfile",
+      "fetchedAt": "2026-11-07T20:36:17.465859+00:00",
+      "status": 200,
+      "sha256": "2d253e9995f6f7d425b2667f185abb3dee1afc5aca18fb6382dcae6dc7b4a538",
+      "quotes": [
+        "USER rustfs"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S49",
+      "url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-1.0.4.provenance.json",
+      "fetchedAt": "2026-11-07T20:36:17.826858+00:00",
+      "status": 200,
+      "sha256": "a4758b844204dfb73c8f1cefee685796723a96d52f5c276bd187b71f9fef4ed1",
+      "quotes": [
+        "refs/tags/1.0.4"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S50",
+      "url": "https://www.pulumi.com/registry/packages/docker/api-docs/remoteimage/",
+      "fetchedAt": "2026-11-07T20:36:18.375107+00:00",
+      "status": 200,
+      "sha256": "a768508ae12bb8d4cc225475e1d96ff22d3364a37ec948e3850a3880018f14fb",
+      "quotes": [
+        "keepLocally"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S51",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketWebsite.html",
+      "fetchedAt": "2026-11-07T20:36:17.825092+00:00",
+      "status": 200,
+      "sha256": "6f637c84bd31030b9f850b4db7673f7cef222b48f9c6bfe78e5696e40e1fa007",
+      "quotes": [
+        "PUT /?website HTTP/1.1"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S52",
+      "url": "https://curl.se/docs/manpage.html",
+      "fetchedAt": "2026-11-07T20:36:18.086787+00:00",
+      "status": 200,
+      "sha256": "3d01dafc630b08f29d6a6871120308558a7c6c2359dc13289289b1cd5fe27199",
+      "quotes": [
+        "--config <file>"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S53",
+      "url": "https://nodejs.org/api/fs.html#watcherclose",
+      "fetchedAt": "2026-11-07T20:36:17.771472+00:00",
+      "status": 200,
+      "sha256": "21b9178884e065bb15852cd5bf2db2f101a2ac499b6adb0f09efa3dfa6fb4bf3",
+      "quotes": [
+        "watcher.close()"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S54",
+      "url": "https://spec.openapis.org/oas/v3.1.1.html",
+      "fetchedAt": "2026-11-07T20:36:18.215423+00:00",
+      "status": 200,
+      "sha256": "95a797a55918e5c9278148ecc7c4a4bd571329f51fbcb5de12672c131c873463",
+      "quotes": [
+        "If in is \"header\" and the name field is \"Accept\", \"Content-Type\" or \"Authorization\", the parameter definition SHALL be ignored."
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S55",
+      "url": "https://registry-1.docker.io/v2/rustfs/rustfs/manifests/1.0.4",
+      "fetchedAt": "2026-11-07T20:37:11.219687+00:00",
+      "status": 200,
+      "sha256": "ed9210d6411d77ffceb70d94b964a3cb7d225983368bc25bebe01e995293dcc2",
+      "quotes": [
+        "\"schemaVersion\": 2"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 1/1 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    },
+    {
+      "id": "S56",
+      "url": "https://dprint.dev/setup/",
+      "fetchedAt": "2026-11-08T06:06:21.060406+00:00",
+      "status": 200,
+      "sha256": "31deb936aa73caac8dcebe7db41146b2ed802c74103bdb47864e7865661454ba",
+      "quotes": [
+        "If you would like to store the cache in a custom location, then specify a DPRINT_CACHE_DIR environment variable.",
+        "DPRINT_MAX_THREADS"
+      ],
+      "attempt": "Fresh byte/status comparison and normalized passage search; changed and missing inputs tested with stubs.",
+      "output": "HTTP 200; 2/2 passages found; byte digest recorded. Runtime counterexamples and outputs: sources.md and task evidence."
+    }
+  ],
+  "documents": [
+    {
+      "file": "HANDOFF.md",
+      "sha256": "ac5d134c83d501d20640a1b61da001cdc1473ef0f648be29c5005589f7b0209c",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "design.md",
+      "sha256": "ce4e1b5aa69ff9267671b2bfbd8b67d02a1fec4f70eee1962e4b402803cdddd6",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S32",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S41",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "file": "evidence/1.0-source-verification.md",
+      "sha256": "11ed2b85cfe79b832946779bed0aff105a4fe5d7ccbde5d399d3c7d7e6540f39",
+      "sourceIds": []
+    },
+    {
+      "file": "evidence/10.1-sdk-residue.md",
+      "sha256": "280276d5438b0137b6ab5c697dd6d5b73cae6b2c746ea28d9b8cbd563d765880",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S30",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/10.2-docs-build-repair.md",
+      "sha256": "0339e802983257fc84d74364917121cc4242d97c57c33f95e7d2ddc428b39870",
+      "sourceIds": [
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S29",
+        "S33",
+        "S34",
+        "S41",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/10.2-formatter-cache.md",
+      "sha256": "2099324680acab8841f38cf522102b1895569295f85c1cd8fe7da7884b5dc2ff",
+      "sourceIds": [
+        "S56"
+      ]
+    },
+    {
+      "file": "evidence/10.2-product-full-audit.md",
+      "sha256": "5c952ff3e130044386f11ae701a3dee14cc7b9efd762e9d6a6617b121de44566",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/10.2-shipment-budget.md",
+      "sha256": "c8603e1daf827429fea9538d531871bf2c9c9217a65472203faf04b43725ad14",
+      "sourceIds": []
+    },
+    {
+      "file": "evidence/10.3-requirement-audit.md",
+      "sha256": "1e31127ca76c08f9b274b9770f0a657dcba367a54eaa583437723b896615938a",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S41",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "file": "evidence/10.6-10.8-runtime-batch.md",
+      "sha256": "861520b284b5676ac1dbf3c43cd1355adc0d45f3fce74082086563c06a9cd677",
+      "sourceIds": []
+    },
+    {
+      "file": "evidence/10.9-audit-transport.md",
+      "sha256": "13ab59365087df3412cfa8b0e9c1726ec7f552aa1bed35db95ef4aad6d25af07",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/2.1-2.2-streams.md",
+      "sha256": "509296e4dd09b4f6c0fa2d3c2e554b9e579938bdd2e256af496614a8c686b52e",
+      "sourceIds": []
+    },
+    {
+      "file": "evidence/4.1-wire-framing.md",
+      "sha256": "4eb5fd77f016af41a57a9cf5c2d3adab3303b20351b442cdcced0424feb09322",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/4.2-lists.md",
+      "sha256": "16547fb0cfe30eab6e6d0c06329faa5767ef9b38f607c67014e75d678837708c",
+      "sourceIds": [
+        "S2"
+      ]
+    },
+    {
+      "file": "evidence/4.3-request-streams.md",
+      "sha256": "2651ee4a0b369cc4f1cf0498532eee159ff455ac992e246c9ad642228056d0c5",
+      "sourceIds": []
+    },
+    {
+      "file": "evidence/4.4-4.5-api-matrix.md",
+      "sha256": "ef100d58bf5e0b25bff7f974b4eb8e3b2ef6750360b5fbc341313d1df66cc129",
+      "sourceIds": [
+        "S30",
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/4.5-api-proxy-progress.md",
+      "sha256": "9e48ef35532153643e5eabb57d6646720f593a3fea10d24893009e4b3e8466c2",
+      "sourceIds": [
+        "S30",
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/4.6-events.md",
+      "sha256": "6e4b985759bd73dbb121381706892c0c06c6f892ccb25c7726990dc88c897aaf",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S30",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/4.7-assets.md",
+      "sha256": "bc2843efd1eb5e2aba2b87301b6b64fd48a39aa0dc69b3242560e4d2a08379c0",
+      "sourceIds": [
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S30",
+        "S32",
+        "S40",
+        "S41",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/4.8-operations.md",
+      "sha256": "01f411f6384547a6a111e7433e62a2b33ae82908f0de06d8b1caf5137993a691",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S30",
+        "S43"
+      ]
+    },
+    {
+      "file": "evidence/4.9-object-store.md",
+      "sha256": "7c81fa338a707cd7d7b76b21bec52b881167b02c536efff1adf6fd349bb806ac",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S32",
+        "S35",
+        "S36",
+        "S37",
+        "S46",
+        "S47",
+        "S48",
+        "S49",
+        "S50",
+        "S55"
+      ]
+    },
+    {
+      "file": "evidence/5.1-sdk-probe.md",
+      "sha256": "be1f707468fa5abbd7ed5952318ac12cbf1506557e37d540ddbca5c1dfb7ee6b",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/5.1-task-implementation.md",
+      "sha256": "ea1303ea32ae5ebcd7c5c764aadcdda074a2fc3f554f24b7426cb785f3d194a5",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/5.2-mcp-docs.md",
+      "sha256": "ad2f634d16bdae13aefc8f5cf463e0c6a3dc0c3b9616f39515642dc128cd2cee",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S33",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/6.0-infrastructure-research.md",
+      "sha256": "21b3f1a554ab358a2566d7994108cc8524d8606c083b5d76ff1ae08379415408",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S32",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.1-6.6-stack.md",
+      "sha256": "bc7fe45c87e0a28b80ff82666282b5fd82b856bd7ac82907ee30377b8a0d36ad",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.10-static-sites.md",
+      "sha256": "c8fbc9e93e0c4571c25f8eb48544d31086709d90a13a7c72d5e1fb96a712eadb",
+      "sourceIds": [
+        "S3",
+        "S16",
+        "S17",
+        "S18",
+        "S32",
+        "S35",
+        "S36",
+        "S37",
+        "S51",
+        "S52"
+      ]
+    },
+    {
+      "file": "evidence/6.11-api-image.md",
+      "sha256": "bbaf49bfc3bdbc717304eeaadba4210e01079d078efca53d6a129ee7b1c9ec34",
+      "sourceIds": [
+        "S29",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.11-completion.md",
+      "sha256": "53bd271c161d1ba0531bedae9b98231300fab0c1812f8e4e0636ba86150ca30a",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S31",
+        "S32",
+        "S33",
+        "S35",
+        "S36",
+        "S37",
+        "S53"
+      ]
+    },
+    {
+      "file": "evidence/6.11-data-and-prune.md",
+      "sha256": "a4f409521b27ba04135d6a463c6865906a832c502b5c78c7fe8e54427d0bd9a2",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.11-development-loop.md",
+      "sha256": "5de2d77ef1064330708ff177111397e635b0a8caa6972f5a2959934393ab3ebc",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/6.11-research.md",
+      "sha256": "f1a31f02af7188f8cd0d8a27a3b5589934f217a4e032612d3c36ef70bf8f6616",
+      "sourceIds": [
+        "S29",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.7-checks-runner.md",
+      "sha256": "b1755493052ed266fdbb70171563abecd7e7f629a7290655dd7e77085dc0cefb",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S29",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.7-container-hooks.md",
+      "sha256": "eef38e7aadf8370682a7fea29eeda21fc6de5e630a88e03c1fd6d64a8b88c2fe",
+      "sourceIds": [
+        "S29",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/6.7-container-orchestration.md",
+      "sha256": "71360353e5e337edcc4b0e813892f24bf50a15ec6285847efadb68ff009d6329",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S29",
+        "S32",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S41",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/6.9-workflow-guides.md",
+      "sha256": "5b48991345956911828b6373a818715c8910a4de0ee982190f517c3a40249f93",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/7.3-streaming-through-caddy.md",
+      "sha256": "54e26ccf3a96512b9d5cdda3ea62217e8da93dc6a9c858f00cb1ab798451781f",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/7.4-benchmark.md",
+      "sha256": "44261eef1f33dcbf589755d09d86f6fdd574c05d5583909523a2b8219017c557",
+      "sourceIds": [
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/7.6-metrics-in-the-tests.md",
+      "sha256": "25111d8a42e3e1186e55c2b6e4aedbed037dc43d9b04cc4ea92d3c111373a8aa",
+      "sourceIds": [
+        "S29",
+        "S32",
+        "S34",
+        "S38",
+        "S39",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/7.7-first-measurements.md",
+      "sha256": "ba8664bddd97b23f5c96db1b4fc1e2f022d0d114b7d618b565ce89bf03ac7cb9",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/7.7-round-trip.md",
+      "sha256": "99099f487f30dfaa99683f5d8a6a0817b2ca6b720c6b057d71a042563d7e8010",
+      "sourceIds": [
+        "S32",
+        "S38",
+        "S39"
+      ]
+    },
+    {
+      "file": "evidence/7.7-runtime-interfaces.md",
+      "sha256": "dd48e8010f6855484125bc776202d1b16b0ea31460c5db2ba20bf125c5dc1f65",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S38",
+        "S39",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/8.1-openapi.md",
+      "sha256": "631da02ba265461c8fed32c6377649ddac7e179399ef84f605199562c73a2306",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/8.2-sdk-integration-proxy.md",
+      "sha256": "481e249fb7103c3c895201704965678e9d563039eb1e9fa26d068ef6752477a5",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/8.2-sdk-proxy.md",
+      "sha256": "a1c72dda1465ac70d27f694beb8ef9b89af151eef042a84ebf5547f91a285248",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/8.2-sdk.md",
+      "sha256": "fb332a4c9908412d577fbe14d23ce67f57fe70805ea471e8142e8b8fbbe8ddc0",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/8.3-8.5-console-proxy.md",
+      "sha256": "564f5ab5fdf35d14a123a2632b1cdb0e7edb389d656a3803a5f124377017adde",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/8.4-sdk-docs-proxy.md",
+      "sha256": "fe1bff49c1a51af8a401b7dd217490353dbf15722bc1cff6d7b985aee44eafb9",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/8.4-sdk-protocol-matrix.md",
+      "sha256": "d04c391f10b96ef44d23867fac27ae14a3348ea6c74ec985196dd2420eb55e49",
+      "sourceIds": [
+        "S2",
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/9.1-adapter-proxy.md",
+      "sha256": "56dded655a366c50d90b6c0351e62aed22734ab856ada3bd215247556b490923",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.1-api-events-proxy.md",
+      "sha256": "34b2ef91c8e510722a0fdc8232eff01cd8abb5d163ec5ee1e784cb1ea141bec5",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.1-asset-list-proxy.md",
+      "sha256": "1f3eaef1fe7d06bbdf07a8735bec83d1647d6764f54f88c2116894c98f08502d",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/9.1-auth-conformance-proxy.md",
+      "sha256": "53f01989f23127897de16c2c1f71d8ea3e585308d83fea3d1a357aed54aebecf",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/9.1-custom-lifecycle-proxy.md",
+      "sha256": "e590358657f3f21a70eb222c429bd0ebd4247ffe22a70406a8a63b2cc2c8aefb",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.1-domain-conformance-proxy.md",
+      "sha256": "e6a6fa2c5fe2edfa8dbeaff9fe9a80b53bca3ad59e414d756438d46b2fa092c6",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/9.1-general-recorder-proxy.md",
+      "sha256": "40e5823a165c9f96fbbc4afcf8567bcbfe286cbcbf3285e3a30b51425d07c710",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.1-real-clients-proxy.md",
+      "sha256": "d862d61fd857a92c6f3fcd9309b689ce776456e568c8b5b31f444f00a64e67b6",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.1-streaming-integration-proxy.md",
+      "sha256": "cf121bfac40becbac2d2f5627a5aec777f3d7138baeb711d1e480bfb7a28c246",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/9.2-model-proxy.md",
+      "sha256": "15110f0f5f10162e816be49699a455773a3dd0ff856e8e01f1e89555a13a77fa",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.4-guides.md",
+      "sha256": "5d204acae61329ad91639180c1308c9ac8e019b2fcd76e6c503ab65ac6661ae0",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/9.5-docs-boundary.md",
+      "sha256": "bb07990917949c0635648c49646681db0d1a3bb62043fa3f0d1189ca55f533f9",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/1.1.md",
+      "sha256": "895186e3e127d18314ff78a0d3390897a020d5edafa50bf5b7be5a1434cf6a47",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/10.1.md",
+      "sha256": "5c14635c4ac374c2889c134aae31397b0072ab4647e63db6b6f96dd07b52f406",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/3.1.md",
+      "sha256": "140fe5123880e4295a359f2b663f6b524cd72b0fb81be43bf83906db70c8fea7",
+      "sourceIds": [
+        "S43"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.11.md",
+      "sha256": "e48de369c771e18328d91bc13eabfada8b2605fb351db1eca89e7c96e646f455",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S30",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.2.md",
+      "sha256": "85b7e94c01dac6fa85fec417bf18f5f6005e32c32d65b3e6ef5af29ad2fc7238",
+      "sourceIds": [
+        "S2"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.4.md",
+      "sha256": "261cc08a31996239b297eda20a4198b76695c62ed943592bac81a8b395c27704",
+      "sourceIds": [
+        "S1",
+        "S3"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.5.md",
+      "sha256": "00fa40cc575da885f1d009b8f9314942fec9f81bf65f91b31972f4604d75badf",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.6.md",
+      "sha256": "f9a38751d7722268326bf1872e5aaf295b9826dd35a5d39ae1068193584fffe6",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S30",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.7.md",
+      "sha256": "87781245a3ee7a8ffcb0e05cc29e29f9c2555511fe39d696da0fe6489e84a2c2",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S30",
+        "S32",
+        "S35",
+        "S36",
+        "S37",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/4.8.md",
+      "sha256": "618a40a74598b9ffc4f671dc4edf7280e0ab8ae48e7569da6e6cbc074e210c0d",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/5.1.md",
+      "sha256": "d4e2f6104ad52353945492403dc0726998b1eb26e17e3420374b1bbeda04070e",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/5.2.md",
+      "sha256": "ac9057fce9e6646cae656a2947da256f9dbc885ae6bb1ae1e16d55a1770892c8",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.0.md",
+      "sha256": "7af42ca56a4045f0a77d5aae219e78a576e5b4971101a1e9b864f392f70660ed",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.1.md",
+      "sha256": "c8c9ad791ab8f00ca6c580b33585f0a15be5de209a9bdd7a01a850a609fbde9b",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.10.md",
+      "sha256": "b44db687592a45441450fb13ae74e964023f83bdda6d90a1be6cfc53a6459e9c",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S32",
+        "S35",
+        "S36",
+        "S37"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.11.md",
+      "sha256": "76f6fd4d1d749c517c62ee21109e64a965893600504afae8fcec1eb3e0f68bd3",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S29",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.2.md",
+      "sha256": "92f9f310a7e9a6bc50d364565e3e73d983a7eb19390ad1d69b87c1d872481602",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.4.md",
+      "sha256": "b70e86e6d95f3dfb52cb98023f9723418af171338f2111fba67e6a8fa47200cc",
+      "sourceIds": [
+        "S19",
+        "S20",
+        "S21",
+        "S23",
+        "S24",
+        "S25",
+        "S28",
+        "S29",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.5.md",
+      "sha256": "0f8c2f839e4bdf467fa373cb1ff88491fac2f4335bc90d2b02869b524f4d7f1a",
+      "sourceIds": [
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/6.7.md",
+      "sha256": "4bbf9811370b7483807c32676750166c9643f5b5045d7e21ee9ecb876b611cf6",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S32",
+        "S35",
+        "S36",
+        "S37"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/7.1.md",
+      "sha256": "74c865ea78663c829ae33c220d6d869f93dab412ff39468f2dbb6c83fbe43b19",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/7.3.md",
+      "sha256": "53afad975180ff193821c42a7f3efd7d8aecd564d1bfc99c2d792eb1bfd6d61f",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/7.4.md",
+      "sha256": "7bc549d104c2707c4882cf348e7cdab8f3d105927dad68ff35fd058791ce01c2",
+      "sourceIds": [
+        "S29",
+        "S32",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/7.6.md",
+      "sha256": "9a327d897493445a4f750f5eb72a71621a78ff325cc0fe5699a742debd77013c",
+      "sourceIds": [
+        "S29",
+        "S34",
+        "S41"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/7.7.md",
+      "sha256": "404a94b5c380d6c187b3d8736ade506bbbc5c26a684f95fa9593b553237c4c37",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S29",
+        "S30",
+        "S32",
+        "S34",
+        "S38",
+        "S39",
+        "S41",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/8.1.md",
+      "sha256": "2375b02d93fbaeb35c1c82b927131fbf99cd5826c09f71111c86b145a9fabee8",
+      "sourceIds": [
+        "S30"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/8.2.md",
+      "sha256": "9d036aeeee81b21348d747af97216a99616270855b1acbee1a5065addabffdcb",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/8.3.md",
+      "sha256": "b8fc8103ead582d0e77c48de92e00f26bd5183baf8df213e5082e0e54a1fe2de",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/8.4.md",
+      "sha256": "334605d21ef43c066c2269bd5077c95d960c1d72b850cc2ba82ce74ab54f76aa",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/8.5.md",
+      "sha256": "90b7b9c6b51af3234149d812146a9518268b613cdf75d711c8627928d9fd2fcd",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/9.1.md",
+      "sha256": "fa52a825e04752dadc1cfd92d5f38c0d8864e7748dacc3fea52e70c05111ad97",
+      "sourceIds": [
+        "S32"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/9.2.md",
+      "sha256": "7d628db5a462cf2ed96f4ed406f3f5849fdf144b5ef7a1e0e6a4f8e4e9fffc99",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/9.3.md",
+      "sha256": "53fc7c212c4f0ef4c661d309366c87d50ed7e9c3e9a49899305a8513f127fc4f",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/9.4.md",
+      "sha256": "4a5bc704c1da6e93158c1e0c8146397e2ca936234771e919154c90c74ccc4a22",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "evidence/sourcing/9.5.md",
+      "sha256": "1f826cd58382697f773bd6de8020771cbe94579959ce819b121a39717a1ec8fb",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "proposal.md",
+      "sha256": "b4d091034bdb1b3ee72fa15ecc5737d1d35c0bccef9958e0383c20b2fdb30df8",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S32",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S41",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "file": "sources.md",
+      "sha256": "c222101d20c22b4bee2b69070e6ceaca1c0c66d2d2956574e263f7f4e64fd217",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S49",
+        "S50",
+        "S51",
+        "S52",
+        "S53",
+        "S54",
+        "S55",
+        "S56"
+      ]
+    },
+    {
+      "file": "specs/aip-conformance/spec.md",
+      "sha256": "8cee681c48d1b66e7d209b64cf57eb7a884c824ac1d7617c741ce4819d2bed71",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "file": "specs/dev-standards/spec.md",
+      "sha256": "849e1d4ca743dff77a88c69a32935dab21c0d5b4592021dd366f09816bddf4f8",
+      "sourceIds": [
+        "S16",
+        "S17",
+        "S18",
+        "S32",
+        "S35",
+        "S36",
+        "S37"
+      ]
+    },
+    {
+      "file": "specs/http-adapter/spec.md",
+      "sha256": "e529ae4b3cfeb455dad047169d9de50746b026866983bfa3928dfbdd5b039d0d",
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S43"
+      ]
+    },
+    {
+      "file": "specs/mcp-adapter/spec.md",
+      "sha256": "fde2dd30c9a41ee4161acae59d9966471bd15be044e5bfe90653271e3cf0052c",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S42"
+      ]
+    },
+    {
+      "file": "specs/real-mcp-client-verification/spec.md",
+      "sha256": "038e047b23ebd30d5f1771a1201e64a222530e7e64c012ab46c8327277077b4f",
+      "sourceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S32",
+        "S42"
+      ]
+    },
+    {
+      "file": "specs/streaming-responses/spec.md",
+      "sha256": "9d0492d06215f304cb4037ce4c7bb57b5b1af5f4f19328ec13bc16d8ceb1d445",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S32",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S41",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "file": "tasks.md",
+      "sha256": "ac8136898de42a9b440f8cc3d1fe4b2377764ec24fce307e2f66a21a30baa723",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S41",
+        "S42",
+        "S43"
+      ]
+    }
+  ]
+}

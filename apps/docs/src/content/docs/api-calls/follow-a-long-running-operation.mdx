@@ -1,0 +1,452 @@
+---
+title: "Following a long-running operation as it works"
+description: "A caller follows a reindex while it runs. Over HTTP the caller reads a stream of events. Over MCP the caller subscribes to the operation, reads its state as a resource and watches it for a short time. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A caller follows a reindex while it runs. Over HTTP the caller reads a stream of events. Over MCP the caller subscribes to the operation, reads its state as a resource and watches it for a short time. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 8 step(s). 8 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book to index
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Start the reindex
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books:reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### HTTP: Follow the operation as an event stream
+
+Flag: **PASSED**
+
+Where: GET /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+- PASSED: The stream ended with the operation done
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Response (ok, HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":false,"metadata":{"parent":"publishers/acme","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000001"}
+
+event: operation
+id: 2
+data: {"done":true,"metadata":{"parent":"publishers/acme","processed":1,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000001","response":{"count":1}}
+```
+
+### MCP: Create a book to index
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Start the reindex
+
+Flag: **PASSED**
+
+Where: tools/call books.reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.reindex",
+    "arguments": {
+      "parent": "publishers/acme"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### MCP: Subscribe to the operation and wait for its updates
+
+Flag: **PASSED**
+
+Where: subscriptions/listen state://operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+- PASSED: The first message acknowledged the subscription
+- PASSED: An update of the operation followed
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "arguments": {}
+  }
+}
+```
+
+Response (ok), an event stream:
+
+```text
+[
+  {
+    "jsonrpc": "2.0",
+    "method": "notifications/subscriptions/acknowledged",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/subscriptionId": 1
+      },
+      "notifications": {
+        "resourceSubscriptions": [
+          "state://operations/op-00000000-0000-4000-8000-000000000001"
+        ]
+      }
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "method": "notifications/resources/updated",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/subscriptionId": 1
+      },
+      "uri": "state://operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "method": "notifications/resources/updated",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/subscriptionId": 1
+      },
+      "uri": "state://operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+]
+```
+
+### MCP: Read the state of the operation as a resource
+
+Flag: **PASSED**
+
+Where: resources/read state://operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "arguments": {}
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": true,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 1,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001",
+  "response": {
+    "count": 1
+  }
+}
+```
+
+### MCP: Watch the operation for a bounded time
+
+Flag: **PASSED**
+
+Where: tools/call operations.watch
+
+Action: Call operations.watch to Watch: Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.watch",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001",
+      "timeoutMs": 3000
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "events": [
+    {
+      "done": true,
+      "metadata": {
+        "parent": "publishers/acme",
+        "processed": 1,
+        "total": 1
+      },
+      "name": "operations/op-00000000-0000-4000-8000-000000000001",
+      "response": {
+        "count": 1
+      }
+    }
+  ]
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

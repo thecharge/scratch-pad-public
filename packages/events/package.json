@@ -1,0 +1,15 @@
+{
+  "name": "@platform/events",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*"
+  }
+}

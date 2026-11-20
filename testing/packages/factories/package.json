@@ -1,0 +1,14 @@
+{
+  "name": "@platform/test-factories",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/constants": "workspace:*",
+    "@platform/test-framework": "workspace:*",
+    "@platform/types": "workspace:*"
+  }
+}

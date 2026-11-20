@@ -1,0 +1,652 @@
+---
+title: "Handling errors from the SDK"
+description: "A failed call throws an error that carries the status and the reason, so your code can react to each case. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A failed call throws an error that carries the status and the reason, so your code can react to each case. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: SDK usage. This page has 9 step(s). 9 passed.
+
+## Before you start
+
+- No setup is needed.
+
+## Steps
+
+### SDK: Install the built package into an empty project
+
+Flag: **PASSED**
+
+Where: An empty project folder with its own package.json
+
+Action: Install the tarball that bun pm pack made, then import the package
+
+Expected result: The package loads from the dist folder inside node_modules, not from the workspace source.
+
+Checks:
+
+- PASSED: The package resolves to node_modules/@platform/sdk/dist/index.js
+
+### SDK: Read a book that does not exist
+
+Flag: **PASSED**
+
+Where: Your own code, inside a try block around booksGet
+
+Action: Call booksGet from the installed package to get a book. Token scopes: read.
+
+Expected result: The call fails with the reason RESOURCE_NOT_FOUND.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_NOT_FOUND
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Call:
+
+```ts
+await unwrap(booksGet({ client, path: {"publisher":"acme","book":"nothing"} }))
+```
+
+Result (error, HTTP 404):
+
+```json
+{
+  "reason": "RESOURCE_NOT_FOUND",
+  "status": "NOT_FOUND"
+}
+```
+
+### SDK: Create a book with a read-only token
+
+Flag: **PASSED**
+
+Where: Your own code, inside a try block around booksCreate
+
+Action: Call booksCreate from the installed package to create a book. Token scopes: read.
+
+Expected result: The call fails with the reason POLICY_DENIED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is POLICY_DENIED
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Call:
+
+```ts
+await unwrap(booksCreate({ client, path: {"publisher":"acme"}, query: {"bookId":"x"}, body: {"title":"X"} }))
+```
+
+Result (error, HTTP 403):
+
+```json
+{
+  "reason": "POLICY_DENIED",
+  "status": "PERMISSION_DENIED"
+}
+```
+
+### SDK: Create the book Dune
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksCreate from the package
+
+Action: Call booksCreate from the installed package to create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksCreate({ client, path: {"publisher":"acme"}, query: {"bookId":"dune"}, body: {"title":"Dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.012Z",
+  "etag": "\"66572dd81324270c\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.012Z"
+}
+```
+
+### SDK: Archive the book
+
+Flag: **PASSED**
+
+Where: Your own code, after importing booksArchive from the package
+
+Action: Call booksArchive from the installed package to archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(booksArchive({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (ok):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.012Z",
+  "etag": "\"e217dd78112b9f05\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.017Z"
+}
+```
+
+### SDK: Archive the same book a second time
+
+Flag: **PASSED**
+
+Where: Your own code, inside a try block around booksArchive
+
+Action: Call booksArchive from the installed package to archive a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_STATE_TRANSITION.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_STATE_TRANSITION
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Call:
+
+```ts
+await unwrap(booksArchive({ client, path: {"publisher":"acme","book":"dune"} }))
+```
+
+Result (error, HTTP 400):
+
+```json
+{
+  "reason": "INVALID_STATE_TRANSITION",
+  "status": "FAILED_PRECONDITION"
+}
+```
+
+### SDK: Change the book with an outdated etag
+
+Flag: **PASSED**
+
+Where: Your own code, inside a try block around booksUpdate
+
+Action: Call booksUpdate from the installed package to change a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason ETAG_MISMATCH.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is ETAG_MISMATCH
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Call:
+
+```ts
+await unwrap(booksUpdate({ client, path: {"publisher":"acme","book":"dune"}, body: {"title":"New","etag":"\"stale\""} }))
+```
+
+Result (error, HTTP 409):
+
+```json
+{
+  "reason": "ETAG_MISMATCH",
+  "status": "ABORTED"
+}
+```
+
+### SDK: Read statistics without the admin scope
+
+Flag: **PASSED**
+
+Where: Your own code, inside a try block around statsGet
+
+Action: Call statsGet from the installed package to read statistics. Token scopes: read.
+
+Expected result: The call fails with the reason POLICY_DENIED.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is POLICY_DENIED
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Call:
+
+```ts
+await unwrap(statsGet({ client }))
+```
+
+Result (error, HTTP 403):
+
+```json
+{
+  "reason": "POLICY_DENIED",
+  "status": "PERMISSION_DENIED"
+}
+```
+
+### SDK: Read statistics with the admin scope
+
+Flag: **PASSED**
+
+Where: Your own code, after importing statsGet from the package
+
+Action: Call statsGet from the installed package to read statistics. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Call:
+
+```ts
+await unwrap(statsGet({ client }))
+```
+
+Result (ok):
+
+```text
+{
+  "byCapability": {
+    "books.archive": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.019Z",
+      "lastSeen": "2001-01-01T00:00:00.023Z",
+      "totalLatencyMs": "<measured value>"
+    },
+    "books.create": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.009Z",
+      "lastSeen": "2001-01-01T00:00:00.014Z",
+      "totalLatencyMs": "<measured value>"
+    },
+    "books.get": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.005Z",
+      "lastSeen": "2001-01-01T00:00:00.005Z",
+      "totalLatencyMs": "<measured value>"
+    },
+    "books.update": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.027Z",
+      "lastSeen": "2001-01-01T00:00:00.027Z",
+      "totalLatencyMs": "<measured value>"
+    },
+    "config.get": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.002Z",
+      "lastSeen": "2001-01-01T00:00:00.002Z",
+      "totalLatencyMs": "<measured value>"
+    },
+    "stats.get": {
+      "cacheHits": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstSeen": "2001-01-01T00:00:00.031Z",
+      "lastSeen": "2001-01-01T00:00:00.031Z",
+      "totalLatencyMs": "<measured value>"
+    }
+  },
+  "cacheHits": "<measured value>",
+  "errors": "<measured value>",
+  "name": "stats",
+  "operations": {
+    "books.archive|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "books.create|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "books.get|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "books.update|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "config.get|application/json|2.0": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "stats.get|application/json|1.1": {
+      "buckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "bytes": "<measured value>",
+      "count": "<measured value>",
+      "errors": "<measured value>",
+      "firstByteBuckets": [
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>",
+        "<measured value>"
+      ],
+      "firstByteMaxMs": "<measured value>",
+      "firstByteTotalMs": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    }
+  },
+  "process": {
+    "cpuSystemMicros": "<measured value>",
+    "cpuUserMicros": "<measured value>",
+    "eventLoopDelayMaxMs": "<measured value>",
+    "externalBytes": "<measured value>",
+    "heapCollections": "<measured value>",
+    "heapFreedBytes": "<measured value>",
+    "heapTotalBytes": "<measured value>",
+    "heapUsedBytes": "<measured value>",
+    "openStreams": "<measured value>",
+    "requestsInFlight": "<measured value>",
+    "rssBytes": "<measured value>",
+    "runningOperations": "<measured value>",
+    "startRssBytes": "<measured value>",
+    "uptimeSeconds": "<measured value>"
+  },
+  "stages": {
+    "input": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "invoke": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "negotiate": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "respond": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "rewrite": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    },
+    "route": {
+      "count": "<measured value>",
+      "maxMs": "<measured value>",
+      "totalMs": "<measured value>"
+    }
+  },
+  "total": "<measured value>"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

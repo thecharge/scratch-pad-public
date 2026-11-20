@@ -1,0 +1,3714 @@
+---
+title: "Read streamed responses with the SDK"
+description: "Read typed results, iterate lists, upload streams and handle operation events with the installed SDK. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence. Page tokens and signed download URLs are placeholders. Read current values from preceding responses."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+Read typed results, iterate lists, upload streams and handle operation events with the installed SDK. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence. Page tokens and signed download URLs are placeholders. Read current values from preceding responses.
+
+Category: SDK usage. This page has 54 step(s). 54 passed.
+
+## Before you start
+
+- No setup is needed.
+
+## Steps
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-1/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-1/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-1/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"SDK book"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"38342cd6ba46ebbf\\\"\",\n  \"name\": \"publishers/sdk-1-1-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "185",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"38342cd6ba46ebbf\"",
+  "name": "publishers/sdk-1-1-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-1-1-1/books/a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-1/books/a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-1-1-1/books/a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"38342cd6ba46ebbf\\\"\",\n  \"name\": \"publishers/sdk-1-1-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "185",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"38342cd6ba46ebbf\"",
+  "name": "publishers/sdk-1-1-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-2/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-2/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-2/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"requests":[{"bookId":"a","title":"A"},{"bookId":"b","title":"B"}]}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"a6e9d05037753c7a\\\"\",\n      \"name\": \"publishers/sdk-1-1-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"c5be6aa811038873\\\"\",\n      \"name\": \"publishers/sdk-1-1-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"a6e9d05037753c7a\"",
+      "name": "publishers/sdk-1-1-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"c5be6aa811038873\"",
+      "name": "publishers/sdk-1-1-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"a6e9d05037753c7a\\\"\",\n      \"name\": \"publishers/sdk-1-1-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    }\n  ],\n  \"nextPageToken\": \"PAGE_TOKEN\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"a6e9d05037753c7a\"",
+      "name": "publishers/sdk-1-1-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    }
+  ],
+  "nextPageToken": "PAGE_TOKEN"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-1-1-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"c5be6aa811038873\\\"\",\n      \"name\": \"publishers/sdk-1-1-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "209",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"c5be6aa811038873\"",
+      "name": "publishers/sdk-1-1-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-3/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-3/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-3/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.031Z\",\n  \"etag\": \"\\\"28383fb0b088b235\\\"\",\n  \"name\": \"publishers/sdk-1-1-3/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.031Z\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "178",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.031Z",
+  "etag": "\"28383fb0b088b235\"",
+  "name": "publishers/sdk-1-1-3/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.031Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-3/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-3/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-3/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-1-1-3\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000001\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "143",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-1-1-3",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":false,\"metadata\":{\"parent\":\"publishers/sdk-1-1-3\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000001\"}\n\nevent: operation\nid: 2\ndata: {\"done\":true,\"metadata\":{\"parent\":\"publishers/sdk-1-1-3\",\"processed\":1,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000001\",\"response\":{\"count\":1}}\n\n"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":false,"metadata":{"parent":"publishers/sdk-1-1-3","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000001"}
+
+event: operation
+id: 2
+data: {"done":true,"metadata":{"parent":"publishers/sdk-1-1-3","processed":1,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000001","response":{"count":1}}
+
+
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-4/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-4/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-4/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.043Z\",\n  \"etag\": \"\\\"b9578118044528bc\\\"\",\n  \"name\": \"publishers/sdk-1-1-4/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.043Z\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "178",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.043Z",
+  "etag": "\"b9578118044528bc\"",
+  "name": "publishers/sdk-1-1-4/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.043Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-4/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-4/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-4/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-1-1-4\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000002\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "143",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-1-1-4",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000002"
+}
+```
+
+### SDK: SDK POST /v1/operations/op-00000000-0000-4000-8000-000000000002:cancel
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000002:cancel`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000002:cancel' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "2",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000002
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000002`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000002' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":true,\"error\":{\"code\":499,\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.ErrorInfo\",\"domain\":\"api.localhost\",\"reason\":\"OPERATION_CANCELLED\"}],\"message\":\"The operation operations/op-00000000-0000-4000-8000-000000000002 was cancelled.\",\"status\":\"CANCELLED\"},\"metadata\":{\"parent\":\"publishers/sdk-1-1-4\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000002\"}\n\n"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":true,"error":{"code":499,"details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","domain":"api.localhost","reason":"OPERATION_CANCELLED"}],"message":"The operation operations/op-00000000-0000-4000-8000-000000000002 was cancelled.","status":"CANCELLED"},"metadata":{"parent":"publishers/sdk-1-1-4","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000002"}
+
+
+```
+
+### SDK: SDK GET /v1/publishers/sdk-1-1-5/books/missing
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-5/books/missing`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 404 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-1-1-5/books/missing' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"error\": {\n    \"code\": 404,\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\n        \"domain\": \"api.localhost\",\n        \"reason\": \"RESOURCE_NOT_FOUND\"\n      }\n    ],\n    \"message\": \"The resource publishers/sdk-1-1-5/books/missing was not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "238",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "api.localhost",
+        "reason": "RESOURCE_NOT_FOUND"
+      }
+    ],
+    "message": "The resource publishers/sdk-1-1-5/books/missing was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-1-1-6/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-6/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-1-1-6/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/x-ndjson' \
+  --data-raw '{"bookId":"a","title":"A"}
+{"bookId":"b","title":"B"}
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"0e10a167bdedbf43\\\"\",\n      \"name\": \"publishers/sdk-1-1-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"b1d93a90be418047\\\"\",\n      \"name\": \"publishers/sdk-1-1-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"0e10a167bdedbf43\"",
+      "name": "publishers/sdk-1-1-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"b1d93a90be418047\"",
+      "name": "publishers/sdk-1-1-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-1-1-6/books
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-1-1-6/books`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-1-1-6/books' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"0e10a167bdedbf43\\\"\",\n      \"name\": \"publishers/sdk-1-1-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"b1d93a90be418047\\\"\",\n      \"name\": \"publishers/sdk-1-1-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"0e10a167bdedbf43\"",
+      "name": "publishers/sdk-1-1-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"b1d93a90be418047\"",
+      "name": "publishers/sdk-1-1-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/assets
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/octet-stream' \
+  --header 'x-content-sha256: [redacted]' \
+  --data-raw 'SDK streamed asset
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000003\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000003\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "server": "Caddy",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000003",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000003"
+}
+```
+
+### SDK: SDK GET /v1/assets/a-00000000-0000-4000-8000-000000000003
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000003`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000003' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"downloadUrl\": \"$DOWNLOAD_URL\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000003\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000003\"\n}"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "transfer-encoding": "chunked",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "downloadUrl": "$DOWNLOAD_URL",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000003",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000003"
+}
+```
+
+### SDK: SDK GET /assets/objects/a-00000000-0000-4000-8000-000000000003
+
+Flag: **PASSED**
+
+Where: $DOWNLOAD_URL
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 1.1.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 1.1 with certificate verification enabled.
+
+Call:
+
+```ts
+DOWNLOAD_URL=$(curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000003' --header 'accept: application/json' --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' | jq -r '.downloadUrl')
+curl --header 'accept: application/octet-stream' "$DOWNLOAD_URL"
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "SDK streamed asset\n"
+  ],
+  "httpVersion": "1.1",
+  "responseHeaders": {
+    "accept-ranges": "bytes",
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "19",
+    "content-type": "application/octet-stream",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "etag": "\"8aff35254995515f25739bfcf728b004\"",
+    "last-modified": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "via": "1.1 Caddy",
+    "x-amz-request-id": "00000000-0000-4000-8000-000000000004",
+    "x-request-id": "00000000-0000-4000-8000-000000000004"
+  }
+}
+```
+
+Response (HTTP 200), binary stream bytes:
+
+```text
+SDK streamed asset
+
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-1/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-1/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-1/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"SDK book"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"3abefbf477bd02dc\\\"\",\n  \"name\": \"publishers/sdk-2-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "183",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"3abefbf477bd02dc\"",
+  "name": "publishers/sdk-2-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-2-1/books/a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-1/books/a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-2-1/books/a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"3abefbf477bd02dc\\\"\",\n  \"name\": \"publishers/sdk-2-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "183",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"3abefbf477bd02dc\"",
+  "name": "publishers/sdk-2-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-2/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-2/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-2/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"requests":[{"bookId":"a","title":"A"},{"bookId":"b","title":"B"}]}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"c0cd6326b98cf499\\\"\",\n      \"name\": \"publishers/sdk-2-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"616b65a6c7512ac5\\\"\",\n      \"name\": \"publishers/sdk-2-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"c0cd6326b98cf499\"",
+      "name": "publishers/sdk-2-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"616b65a6c7512ac5\"",
+      "name": "publishers/sdk-2-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"c0cd6326b98cf499\\\"\",\n      \"name\": \"publishers/sdk-2-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    }\n  ],\n  \"nextPageToken\": \"PAGE_TOKEN\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"c0cd6326b98cf499\"",
+      "name": "publishers/sdk-2-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    }
+  ],
+  "nextPageToken": "PAGE_TOKEN"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-2-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"616b65a6c7512ac5\\\"\",\n      \"name\": \"publishers/sdk-2-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "207",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"616b65a6c7512ac5\"",
+      "name": "publishers/sdk-2-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-3/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-3/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-3/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.031Z\",\n  \"etag\": \"\\\"f0a00a895bd14ff5\\\"\",\n  \"name\": \"publishers/sdk-2-3/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.031Z\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "176",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.031Z",
+  "etag": "\"f0a00a895bd14ff5\"",
+  "name": "publishers/sdk-2-3/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.031Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-3/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-3/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-3/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-2-3\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000005\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "141",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-2-3",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000005"
+}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000005
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000005`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000005' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":false,\"metadata\":{\"parent\":\"publishers/sdk-2-3\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000005\"}\n\nevent: operation\nid: 2\ndata: {\"done\":true,\"metadata\":{\"parent\":\"publishers/sdk-2-3\",\"processed\":1,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000005\",\"response\":{\"count\":1}}\n\n"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":false,"metadata":{"parent":"publishers/sdk-2-3","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000005"}
+
+event: operation
+id: 2
+data: {"done":true,"metadata":{"parent":"publishers/sdk-2-3","processed":1,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000005","response":{"count":1}}
+
+
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-4/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-4/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-4/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.043Z\",\n  \"etag\": \"\\\"4ff5f30a6f09be66\\\"\",\n  \"name\": \"publishers/sdk-2-4/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.043Z\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "176",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.043Z",
+  "etag": "\"4ff5f30a6f09be66\"",
+  "name": "publishers/sdk-2-4/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.043Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-4/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-4/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-4/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-2-4\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000006\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "141",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-2-4",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000006"
+}
+```
+
+### SDK: SDK POST /v1/operations/op-00000000-0000-4000-8000-000000000006:cancel
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000006:cancel`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000006:cancel' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "2",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000006
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000006`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000006' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":true,\"error\":{\"code\":499,\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.ErrorInfo\",\"domain\":\"api.localhost\",\"reason\":\"OPERATION_CANCELLED\"}],\"message\":\"The operation operations/op-00000000-0000-4000-8000-000000000006 was cancelled.\",\"status\":\"CANCELLED\"},\"metadata\":{\"parent\":\"publishers/sdk-2-4\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000006\"}\n\n"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":true,"error":{"code":499,"details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","domain":"api.localhost","reason":"OPERATION_CANCELLED"}],"message":"The operation operations/op-00000000-0000-4000-8000-000000000006 was cancelled.","status":"CANCELLED"},"metadata":{"parent":"publishers/sdk-2-4","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000006"}
+
+
+```
+
+### SDK: SDK GET /v1/publishers/sdk-2-5/books/missing
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-5/books/missing`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 404 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-2-5/books/missing' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"error\": {\n    \"code\": 404,\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\n        \"domain\": \"api.localhost\",\n        \"reason\": \"RESOURCE_NOT_FOUND\"\n      }\n    ],\n    \"message\": \"The resource publishers/sdk-2-5/books/missing was not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "236",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "api.localhost",
+        "reason": "RESOURCE_NOT_FOUND"
+      }
+    ],
+    "message": "The resource publishers/sdk-2-5/books/missing was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-2-6/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-6/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-2-6/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/x-ndjson' \
+  --data-raw '{"bookId":"a","title":"A"}
+{"bookId":"b","title":"B"}
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"a1c577f52a5d139a\\\"\",\n      \"name\": \"publishers/sdk-2-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"b204900782f2b412\\\"\",\n      \"name\": \"publishers/sdk-2-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"a1c577f52a5d139a\"",
+      "name": "publishers/sdk-2-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"b204900782f2b412\"",
+      "name": "publishers/sdk-2-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-2-6/books
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-2-6/books`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-2-6/books' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"a1c577f52a5d139a\\\"\",\n      \"name\": \"publishers/sdk-2-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"b204900782f2b412\\\"\",\n      \"name\": \"publishers/sdk-2-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"a1c577f52a5d139a\"",
+      "name": "publishers/sdk-2-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"b204900782f2b412\"",
+      "name": "publishers/sdk-2-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/assets
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/octet-stream' \
+  --header 'x-content-sha256: [redacted]' \
+  --data-raw 'SDK streamed asset
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000007\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000007\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000007",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000007"
+}
+```
+
+### SDK: SDK GET /v1/assets/a-00000000-0000-4000-8000-000000000007
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000007`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000007' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"downloadUrl\": \"$DOWNLOAD_URL\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000007\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000007\"\n}"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "downloadUrl": "$DOWNLOAD_URL",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000007",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000007"
+}
+```
+
+### SDK: SDK GET /assets/objects/a-00000000-0000-4000-8000-000000000007
+
+Flag: **PASSED**
+
+Where: $DOWNLOAD_URL
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 2.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 2 with certificate verification enabled.
+
+Call:
+
+```ts
+DOWNLOAD_URL=$(curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000007' --header 'accept: application/json' --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' | jq -r '.downloadUrl')
+curl --header 'accept: application/octet-stream' "$DOWNLOAD_URL"
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "SDK streamed asset\n"
+  ],
+  "httpVersion": "2",
+  "responseHeaders": {
+    "accept-ranges": "bytes",
+    "alt-svc": "h3=\":8443\"; ma=2592000",
+    "content-length": "19",
+    "content-type": "application/octet-stream",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "etag": "\"8aff35254995515f25739bfcf728b004\"",
+    "last-modified": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "via": "1.1 Caddy",
+    "x-amz-request-id": "00000000-0000-4000-8000-000000000008",
+    "x-request-id": "00000000-0000-4000-8000-000000000008"
+  }
+}
+```
+
+Response (HTTP 200), binary stream bytes:
+
+```text
+SDK streamed asset
+
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-1/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-1/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-1/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"SDK book"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"48e91fe61e8d5509\\\"\",\n  \"name\": \"publishers/sdk-3-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "183",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"48e91fe61e8d5509\"",
+  "name": "publishers/sdk-3-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-3-1/books/a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-1/books/a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-3-1/books/a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.005Z\",\n  \"etag\": \"\\\"48e91fe61e8d5509\\\"\",\n  \"name\": \"publishers/sdk-3-1/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"SDK book\",\n  \"updateTime\": \"2001-01-01T00:00:00.005Z\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "183",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.005Z",
+  "etag": "\"48e91fe61e8d5509\"",
+  "name": "publishers/sdk-3-1/books/a",
+  "state": "ACTIVE",
+  "title": "SDK book",
+  "updateTime": "2001-01-01T00:00:00.005Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-2/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-2/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-2/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"requests":[{"bookId":"a","title":"A"},{"bookId":"b","title":"B"}]}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"93f2ecb216150b2b\\\"\",\n      \"name\": \"publishers/sdk-3-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"bea446f3a25082e8\\\"\",\n      \"name\": \"publishers/sdk-3-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"93f2ecb216150b2b\"",
+      "name": "publishers/sdk-3-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"bea446f3a25082e8\"",
+      "name": "publishers/sdk-3-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.014Z\",\n      \"etag\": \"\\\"93f2ecb216150b2b\\\"\",\n      \"name\": \"publishers/sdk-3-2/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.014Z\"\n    }\n  ],\n  \"nextPageToken\": \"PAGE_TOKEN\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.014Z",
+      "etag": "\"93f2ecb216150b2b\"",
+      "name": "publishers/sdk-3-2/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.014Z"
+    }
+  ],
+  "nextPageToken": "PAGE_TOKEN"
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-3-2/books?pageSize=1&orderBy=title&pageToken=PAGE_TOKEN' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.015Z\",\n      \"etag\": \"\\\"bea446f3a25082e8\\\"\",\n      \"name\": \"publishers/sdk-3-2/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.015Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "207",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.015Z",
+      "etag": "\"bea446f3a25082e8\"",
+      "name": "publishers/sdk-3-2/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.015Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-3/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-3/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-3/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.031Z\",\n  \"etag\": \"\\\"9e2ff5eb4cd883df\\\"\",\n  \"name\": \"publishers/sdk-3-3/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.031Z\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "176",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.031Z",
+  "etag": "\"9e2ff5eb4cd883df\"",
+  "name": "publishers/sdk-3-3/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.031Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-3/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-3/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-3/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-3-3\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000009\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "141",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-3-3",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000009"
+}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000009
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000009`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000009' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":false,\"metadata\":{\"parent\":\"publishers/sdk-3-3\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000009\"}\n\nevent: operation\nid: 2\ndata: {\"done\":true,\"metadata\":{\"parent\":\"publishers/sdk-3-3\",\"processed\":1,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000009\",\"response\":{\"count\":1}}\n\n"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":false,"metadata":{"parent":"publishers/sdk-3-3","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000009"}
+
+event: operation
+id: 2
+data: {"done":true,"metadata":{"parent":"publishers/sdk-3-3","processed":1,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000009","response":{"count":1}}
+
+
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-4/books?bookId=a
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-4/books?bookId=a`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-4/books?bookId=a' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"A"}'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.043Z\",\n  \"etag\": \"\\\"a1ee9eb3c1678b61\\\"\",\n  \"name\": \"publishers/sdk-3-4/books/a\",\n  \"state\": \"ACTIVE\",\n  \"title\": \"A\",\n  \"updateTime\": \"2001-01-01T00:00:00.043Z\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "176",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.043Z",
+  "etag": "\"a1ee9eb3c1678b61\"",
+  "name": "publishers/sdk-3-4/books/a",
+  "state": "ACTIVE",
+  "title": "A",
+  "updateTime": "2001-01-01T00:00:00.043Z"
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-4/books:reindex
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-4/books:reindex`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-4/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"done\": false,\n  \"metadata\": {\n    \"parent\": \"publishers/sdk-3-4\",\n    \"processed\": 0,\n    \"total\": 1\n  },\n  \"name\": \"operations/op-00000000-0000-4000-8000-000000000010\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "141",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/sdk-3-4",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000010"
+}
+```
+
+### SDK: SDK POST /v1/operations/op-00000000-0000-4000-8000-000000000010:cancel
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000010:cancel`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000010:cancel' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json' \
+  --header 'content-length: 0'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "2",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{}
+```
+
+### SDK: SDK GET /v1/operations/op-00000000-0000-4000-8000-000000000010
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000010`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000010' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: text/event-stream'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    ": connected\n\nevent: operation\nid: 1\ndata: {\"done\":true,\"error\":{\"code\":499,\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.ErrorInfo\",\"domain\":\"api.localhost\",\"reason\":\"OPERATION_CANCELLED\"}],\"message\":\"The operation operations/op-00000000-0000-4000-8000-000000000010 was cancelled.\",\"status\":\"CANCELLED\"},\"metadata\":{\"parent\":\"publishers/sdk-3-4\",\"processed\":0,\"total\":1},\"name\":\"operations/op-00000000-0000-4000-8000-000000000010\"}\n\n"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "cache-control": "no-cache",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "text/event-stream",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Response (HTTP 200), an event stream:
+
+```text
+: connected
+
+event: operation
+id: 1
+data: {"done":true,"error":{"code":499,"details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","domain":"api.localhost","reason":"OPERATION_CANCELLED"}],"message":"The operation operations/op-00000000-0000-4000-8000-000000000010 was cancelled.","status":"CANCELLED"},"metadata":{"parent":"publishers/sdk-3-4","processed":0,"total":1},"name":"operations/op-00000000-0000-4000-8000-000000000010"}
+
+
+```
+
+### SDK: SDK GET /v1/publishers/sdk-3-5/books/missing
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-5/books/missing`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 404 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-3-5/books/missing' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"error\": {\n    \"code\": 404,\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\n        \"domain\": \"api.localhost\",\n        \"reason\": \"RESOURCE_NOT_FOUND\"\n      }\n    ],\n    \"message\": \"The resource publishers/sdk-3-5/books/missing was not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-length": "236",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 404):
+
+```json
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "api.localhost",
+        "reason": "RESOURCE_NOT_FOUND"
+      }
+    ],
+    "message": "The resource publishers/sdk-3-5/books/missing was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+### SDK: SDK POST /v1/publishers/sdk-3-6/books:batchCreate
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-6/books:batchCreate`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/sdk-3-6/books:batchCreate' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/x-ndjson' \
+  --data-raw '{"bookId":"a","title":"A"}
+{"bookId":"b","title":"B"}
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"04123543a94adba9\\\"\",\n      \"name\": \"publishers/sdk-3-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"1cd8407fc9112d48\\\"\",\n      \"name\": \"publishers/sdk-3-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ]\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"04123543a94adba9\"",
+      "name": "publishers/sdk-3-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"1cd8407fc9112d48\"",
+      "name": "publishers/sdk-3-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ]
+}
+```
+
+### SDK: SDK GET /v1/publishers/sdk-3-6/books
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/publishers/sdk-3-6/books`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/sdk-3-6/books' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"books\": [\n    {\n      \"createTime\": \"2001-01-01T00:00:00.062Z\",\n      \"etag\": \"\\\"04123543a94adba9\\\"\",\n      \"name\": \"publishers/sdk-3-6/books/a\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"A\",\n      \"updateTime\": \"2001-01-01T00:00:00.062Z\"\n    },\n    {\n      \"createTime\": \"2001-01-01T00:00:00.063Z\",\n      \"etag\": \"\\\"1cd8407fc9112d48\\\"\",\n      \"name\": \"publishers/sdk-3-6/books/b\",\n      \"state\": \"ACTIVE\",\n      \"title\": \"B\",\n      \"updateTime\": \"2001-01-01T00:00:00.063Z\"\n    }\n  ],\n  \"nextPageToken\": \"\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "books": [
+    {
+      "createTime": "2001-01-01T00:00:00.062Z",
+      "etag": "\"04123543a94adba9\"",
+      "name": "publishers/sdk-3-6/books/a",
+      "state": "ACTIVE",
+      "title": "A",
+      "updateTime": "2001-01-01T00:00:00.062Z"
+    },
+    {
+      "createTime": "2001-01-01T00:00:00.063Z",
+      "etag": "\"1cd8407fc9112d48\"",
+      "name": "publishers/sdk-3-6/books/b",
+      "state": "ACTIVE",
+      "title": "B",
+      "updateTime": "2001-01-01T00:00:00.063Z"
+    }
+  ],
+  "nextPageToken": ""
+}
+```
+
+### SDK: SDK POST /v1/assets
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/assets' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/octet-stream' \
+  --header 'x-content-sha256: [redacted]' \
+  --data-raw 'SDK streamed asset
+'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000011\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000011\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000011",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000011"
+}
+```
+
+### SDK: SDK GET /v1/assets/a-00000000-0000-4000-8000-000000000011
+
+Flag: **PASSED**
+
+Where: `https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000011`
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000011' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "{\n  \"createTime\": \"2001-01-01T00:00:00.000Z\",\n  \"downloadUrl\": \"$DOWNLOAD_URL\",\n  \"mediaType\": \"application/octet-stream\",\n  \"name\": \"assets/a-00000000-0000-4000-8000-000000000011\",\n  \"sha256\": \"c846f9911aded9dc0a0c75ef36028b8319689bca31e44787783613eef87b0efc\",\n  \"sizeBytes\": 19,\n  \"uri\": \"asset://a-00000000-0000-4000-8000-000000000011\"\n}"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+    "content-type": "application/json",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "origin-agent-cluster": "?1",
+    "referrer-policy": "no-referrer",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "via": "1.1 Caddy",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+  }
+}
+```
+
+Result (HTTP 200):
+
+```json
+{
+  "createTime": "2001-01-01T00:00:00.000Z",
+  "downloadUrl": "$DOWNLOAD_URL",
+  "mediaType": "application/octet-stream",
+  "name": "assets/a-00000000-0000-4000-8000-000000000011",
+  "sha256": "[redacted]",
+  "sizeBytes": 19,
+  "uri": "asset://a-00000000-0000-4000-8000-000000000011"
+}
+```
+
+### SDK: SDK GET /assets/objects/a-00000000-0000-4000-8000-000000000011
+
+Flag: **PASSED**
+
+Where: $DOWNLOAD_URL
+
+Action: Send the installed SDK request and check its typed result or error.
+
+Expected result: HTTP 200 over HTTP 3.
+
+Checks:
+
+- PASSED: The installed SDK negotiated HTTP 3 with certificate verification enabled.
+
+Call:
+
+```ts
+DOWNLOAD_URL=$(curl --request GET 'https://localhost:8443/v1/assets/a-00000000-0000-4000-8000-000000000011' --header 'accept: application/json' --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' | jq -r '.downloadUrl')
+curl --header 'accept: application/octet-stream' "$DOWNLOAD_URL"
+```
+
+Observed headers and response chunks:
+
+```json
+{
+  "chunks": [
+    "SDK streamed asset\n"
+  ],
+  "httpVersion": "3",
+  "responseHeaders": {
+    "accept-ranges": "bytes",
+    "content-length": "19",
+    "content-type": "application/octet-stream",
+    "date": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "etag": "\"8aff35254995515f25739bfcf728b004\"",
+    "last-modified": "Mon, 01 Jan 2001 00:00:00 GMT",
+    "via": "1.1 Caddy",
+    "x-amz-request-id": "00000000-0000-4000-8000-000000000012",
+    "x-request-id": "00000000-0000-4000-8000-000000000012"
+  }
+}
+```
+
+Response (HTTP 200), binary stream bytes:
+
+```text
+SDK streamed asset
+
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

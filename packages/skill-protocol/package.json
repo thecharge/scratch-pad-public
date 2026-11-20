@@ -1,0 +1,21 @@
+{
+  "name": "@platform/skill-protocol",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "@platform/auth": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {}
+}

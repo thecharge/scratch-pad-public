@@ -1,0 +1,5 @@
+{
+  "registryOrigin": "https://registry-1.docker.io",
+  "registryToken": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:rustfs/rustfs:pull",
+  "registryAccept": "application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json"
+}

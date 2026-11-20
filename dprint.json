@@ -1,0 +1,45 @@
+{
+  "lineWidth": 100,
+  "newLineKind": "lf",
+  "markdown": {
+    "textWrap": "never",
+    "codeBlock.skipFormat": true
+  },
+  "excludes": [
+    "**/node_modules",
+    "**/dist",
+    "**/.astro",
+    "**/*.mdx",
+    "openspec/**",
+    "bun.lock",
+    "apps/docs/src/content/docs/ui/**",
+    "apps/docs/src/content/docs/api-calls/**",
+    "apps/docs/src/content/docs/api-handling/**",
+    "apps/docs/src/content/docs/troubleshooting/**",
+    "apps/docs/src/content/docs/openapi/**",
+    "apps/docs/src/content/docs/sdk-usage/reference.md",
+    "apps/docs/dist/**",
+    "dist/**",
+    "docs/e2e/**",
+    "apps/docs/src/content/docs/general/**",
+    "**/generated",
+    "**/drizzle",
+    "**/components/ui",
+    ".tools/**",
+    "apps/docs/public/**",
+    "openspec/config.yaml",
+    "**/*.d.ts",
+    "packages/*/package.json",
+    "testing/package.json",
+    "testing/packages/*/package.json",
+    ".claude/worktrees/**",
+    ".claude/commands/**",
+    ".claude/skills/openspec-*/**"
+  ],
+  "plugins": [
+    "npm:@dprint/markdown@0.28.2",
+    "npm:@dprint/toml@0.9.0",
+    "npm:@dprint/dockerfile@0.7.0",
+    "npm:dprint-plugin-yaml@0.6.0"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@platform/aip",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/capability": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/errors": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/store": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {}
+}

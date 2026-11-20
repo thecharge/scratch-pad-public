@@ -1,0 +1,14 @@
+export const PROXY_RECORDER_PREFIX = "proxy-recorder-";
+export const PROXY_RECORDER_INPUT_FILE = "input.json";
+export const PROXY_RECORDER_RESULT_SUFFIX = ".result";
+export const PROXY_RECORDER_ENTRY = "testing/packages/recorder/src/proxy-entry.ts";
+export const PROXY_RECORDER_ENV = "PROXY_RECORDER_INPUT";
+export const PROXY_RECORDER_CASE = "record actual client interfaces through the isolated proxy";
+export const PROXY_RECORDER_MISSING_INPUT = "missing proxy recorder input";
+export const PROXY_RECORDER_MISSING_INTERFACES = "missing proxy interfaces";
+export const PROXY_RECORDER_MISSING_PAGES = "missing proxy recorder pages";
+export const PROXY_RECORDER_TLS_FAILURE = "recorder TLS verification failed";
+export const PROXY_FIXTURE_FLAGS_PATH = "/__flags";
+export const PROXY_FIXTURE_UNMARKED_PATH = "/__without-marker";
+export const PROXY_BACKEND_ENV = "SDK_BACKEND_ORIGIN";
+export const EXTRA_CA_ENV = "NODE_EXTRA_CA_CERTS";

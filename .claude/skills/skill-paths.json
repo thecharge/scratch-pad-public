@@ -1,0 +1,125 @@
+{
+  "project-stack": [
+    "apps/infra/**",
+    "packages/config/src/environments.ts",
+    "packages/types/src/infra.ts",
+    "packages/constants/src/infra.ts"
+  ],
+  "project-develop": [
+    "tooling/scripts/dev-status.ts",
+    ".claude/commands/dev/status.md",
+    ".claude/skills/project-develop/SKILL.md"
+  ],
+  "project-overview": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".codex/skills/project-*",
+    ".agents/skills/project-*"
+  ],
+  "project-setup-and-verify": [
+    "tooling/scripts/audit.ts",
+    "tooling/scripts/verify.ts",
+    "tooling/scripts/install-tools.ts",
+    "tooling/scripts/download-tool.ts",
+    "docs/running-verify.md",
+    "package.json"
+  ],
+  "project-capabilities": [
+    "packages/capability/src/**",
+    "packages/pipeline/src/**",
+    "apps/api/src/registry.ts",
+    "docs/quickstart-developer.md"
+  ],
+  "project-testing": [
+    "testing/package.json",
+    "testing/packages/*/package.json",
+    "tooling/scripts/check-tiers.ts",
+    "tooling/scripts/check-testing-area.ts",
+    "tooling/scripts/check-unit-cases.ts",
+    "tooling/scripts/run-tier.ts",
+    "tooling/scripts/run-coverage.ts",
+    "tooling/scripts/test-tiers.ts",
+    "tooling/scripts/verification-timing.ts",
+    "docs/testing.md"
+  ],
+  "project-docs": [
+    "tooling/scripts/build-docs.ts",
+    "tooling/scripts/check-docs-scope.ts",
+    "tooling/scripts/check-plain-language.ts",
+    "tooling/scripts/check-concrete-docs.ts",
+    "tooling/scripts/check-error-cases.ts",
+    "apps/docs/astro.config.ts",
+    "tooling/scripts/generate-asset-docs.ts",
+    "tooling/scripts/generate-mcp-docs.ts",
+    "testing/packages/recorder/src/guide-display.ts",
+    "testing/packages/recorder/src/record.ts",
+    "testing/packages/recorder/src/sdk-record.ts",
+    "testing/packages/recorder/src/ui/record.ts",
+    "tooling/scripts/generate-http-api-docs.ts"
+  ],
+  "project-openapi-sdk": [
+    "packages/sdk/openapi-ts.config.ts",
+    "tooling/scripts/openapi-check.ts",
+    "tooling/scripts/generate-sdk.ts",
+    "tooling/scripts/build-sdk.ts",
+    "tooling/scripts/check-sdk-pack.ts",
+    "tooling/scripts/generate-api-docs.ts",
+    "packages/openapi/src/**",
+    "packages/sdk/package.json",
+    "docs/sdk.md"
+  ],
+  "project-mcp-skills": [
+    "packages/mcp-adapter/src/**",
+    "packages/skill-protocol/src/**",
+    "packages/skills/**",
+    "tooling/scripts/check-skill-packages.ts",
+    "docs/mcp-clients.md",
+    "docs/quickstart-agent.md"
+  ],
+  "project-rules-and-hooks": [
+    "tooling/scripts/verification-inputs.ts",
+    "tooling/scripts/verification-plan.ts",
+    "tooling/scripts/verification-report.ts",
+    "packages/constants/src/verification.ts",
+    "packages/types/src/verification.ts",
+    "tooling/scripts/check-untracked.ts",
+    "lefthook.yml",
+    "DEV_RULES.md",
+    "packages/constants/src/tooling.ts",
+    "tooling/scripts/check-rules.ts",
+    "tooling/scripts/check-openspec.ts",
+    "openspec/config.yaml",
+    "tooling/scripts/check-async-functions.ts",
+    "async-ignore.json",
+    "tooling/scripts/check-promise-all.ts",
+    "promise-all-ignore.json",
+    "tooling/scripts/check-package-graph.ts",
+    "packages/util/**",
+    "tooling/scripts/fast-shipping.ts",
+    "packages/constants/src/fast-shipping.ts",
+    "tooling/scripts/verification-push.ts",
+    "packages/constants/src/verification-push.ts",
+    "packages/types/src/verification-push.ts",
+    "tooling/scripts/check-sources.ts",
+    "packages/constants/src/sources.ts",
+    "packages/types/src/sources.ts",
+    "openspec/changes/*/source-records.json",
+    "packages/config/source-endpoints.json",
+    "tooling/scripts/ast.ts",
+    "tooling/scripts/check-formatting.ts",
+    "tooling/scripts/strip-comments.ts",
+    "dprint.json",
+    "cspell.json",
+    "tooling/scripts/document-scope.ts",
+    "tooling/scripts/document-index.ts",
+    "tooling/scripts/document-shipping.ts",
+    "tooling/scripts/check-document-links.ts",
+    "packages/constants/src/document-shipping.ts",
+    "packages/types/src/document-shipping.ts"
+  ],
+  "project-self-update": [
+    ".claude/skills/skill-paths.json",
+    "tooling/scripts/check-skills-fresh.ts",
+    "tooling/scripts/check-agent-knowledge.ts"
+  ]
+}

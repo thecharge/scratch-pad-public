@@ -1,0 +1,19 @@
+{
+  "name": "@platform/infra",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/config": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/messages": "workspace:*",
+    "@platform/types": "workspace:*",
+    "@platform/util": "workspace:*",
+    "@pulumi/docker": "5.2.0",
+    "@pulumi/pulumi": "3.273.0",
+    "zod": "^4.0.0"
+  }
+}

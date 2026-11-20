@@ -1,0 +1,169 @@
+---
+title: "Filtering the request log"
+description: "The log lists recent events and narrows to one capability when filtered. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+The log lists recent events and narrows to one capability when filtered. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: UI. This page has 7 step(s). 7 passed.
+
+## Before you start
+
+- The console address is `http://localhost:5173`.
+
+## Steps
+
+### CONSOLE: Open the console
+
+Flag: **PASSED**
+
+Where: The console address in the browser
+
+URL: `http://localhost:5173/`
+
+Action: Open the console page
+
+Expected result: The page says that an administrator is needed
+
+Checks:
+
+- PASSED: Text expected visible: "This console needs the admin scope. Sign in with an administrator account."
+- PASSED: The page raised no error
+
+![Open the console](./shots/console-request-log-1.png)
+
+### CONSOLE: Sign in with the authorization code flow
+
+Flag: **PASSED**
+
+Where: The console start page
+
+URL: `http://localhost:5173/`
+
+Action: Click the Sign in button
+
+Expected result: The console title and the Live requests menu appear
+
+Checks:
+
+- PASSED: Text expected visible: "Capability console"
+- PASSED: Text expected visible: "Live requests"
+- PASSED: The page raised no error
+
+![Sign in with the authorization code flow](./shots/console-request-log-2.png)
+
+### CONSOLE: The API handles a request
+
+Flag: **PASSED**
+
+Where: The API, outside the console
+
+Action: Send GET /v1/publishers/acme/books/dune to the API
+
+Expected result: The API answers with HTTP 200
+
+Checks:
+
+- PASSED: The page raised no error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json'
+```
+
+![The API handles a request](./shots/console-request-log-3.png)
+
+### CONSOLE: The API handles a failing request
+
+Flag: **PASSED**
+
+Where: The API, outside the console
+
+Action: Send GET /v1/publishers/acme/books/none to the API
+
+Expected result: The API answers with HTTP 404
+
+Checks:
+
+- PASSED: The page raised no error
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/publishers/acme/books/none' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json'
+```
+
+![The API handles a failing request](./shots/console-request-log-4.png)
+
+### CONSOLE: Open the request log
+
+Flag: **PASSED**
+
+Where: The console menu
+
+URL: `http://localhost:5173/`
+
+Action: Click the Request log menu
+
+Expected result: The log lists books.get
+
+Checks:
+
+- PASSED: Text expected visible: "books.get"
+- PASSED: The page raised no error
+
+![Open the request log](./shots/console-request-log-5.png)
+
+### CONSOLE: Filter by a capability that was never called
+
+Flag: **PASSED**
+
+Where: The capability filter above the log
+
+URL: `http://localhost:5173/`
+
+Action: Type books.archive in the filter
+
+Expected result: The log no longer shows books.get
+
+Checks:
+
+- PASSED: Text expected hidden: "books.get"
+- PASSED: The page raised no error
+
+![Filter by a capability that was never called](./shots/console-request-log-6.png)
+
+### CONSOLE: Filter by the capability that was called
+
+Flag: **PASSED**
+
+Where: The capability filter above the log
+
+URL: `http://localhost:5173/`
+
+Action: Type books.get in the filter
+
+Expected result: The log shows books.get again
+
+Checks:
+
+- PASSED: Text expected visible: "books.get"
+- PASSED: The page raised no error
+
+![Filter by the capability that was called](./shots/console-request-log-7.png)
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

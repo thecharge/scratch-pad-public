@@ -1,0 +1,719 @@
+---
+title: "Errors when the state does not allow the call"
+description: "A call can fail because of what already exists, or because the resource is in the wrong state. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+A call can fail because of what already exists, or because the resource is in the wrong state. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: Troubleshooting. This page has 14 step(s). 14 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Create the same book again
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason RESOURCE_ALREADY_EXISTS.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_ALREADY_EXISTS
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (error, HTTP 409):
+
+```json
+{
+  "error": {
+    "code": 409,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "RESOURCE_ALREADY_EXISTS"
+      }
+    ],
+    "message": "The resource publishers/acme/books/dune already exists.",
+    "status": "ALREADY_EXISTS"
+  }
+}
+```
+
+### HTTP: Update with an etag that is out of date
+
+Flag: **PASSED**
+
+Where: PATCH /v1/publishers/acme/books/dune?updateMask=title
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason ETAG_MISMATCH.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is ETAG_MISMATCH
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request PATCH 'https://localhost:8443/v1/publishers/acme/books/dune?updateMask=title' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"New","etag":"stale"}'
+```
+
+Response (error, HTTP 409):
+
+```json
+{
+  "error": {
+    "code": 409,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "ETAG_MISMATCH"
+      }
+    ],
+    "message": "The resource was modified; its etag no longer matches.",
+    "status": "ABORTED"
+  }
+}
+```
+
+### HTTP: Update with a field mask that names no field
+
+Flag: **PASSED**
+
+Where: PATCH /v1/publishers/acme/books/dune?updateMask=bogus
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_FIELD_MASK.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_FIELD_MASK
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request PATCH 'https://localhost:8443/v1/publishers/acme/books/dune?updateMask=bogus' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"New"}'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_FIELD_MASK"
+      }
+    ],
+    "message": "The field mask is not valid: bogus.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+```
+
+### HTTP: Archive the book
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books/dune:archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books/dune:archive' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"74b0922e6656e75c\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.019Z"
+}
+```
+
+### HTTP: Archive it a second time
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books/dune:archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_STATE_TRANSITION.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_STATE_TRANSITION
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books/dune:archive' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "INVALID_STATE_TRANSITION"
+      }
+    ],
+    "message": "The resource cannot move from ARCHIVED to ARCHIVED.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+```
+
+### HTTP: Delete a publisher that still has books
+
+Flag: **PASSED**
+
+Where: DELETE /v1/publishers/acme
+
+Action: Call publishers.delete to Delete a publisher and, with force, its books. Token scopes: read, write.
+
+Expected result: The call fails with the reason HAS_CHILDREN.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is HAS_CHILDREN
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request DELETE 'https://localhost:8443/v1/publishers/acme' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 400):
+
+```json
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "HAS_CHILDREN"
+      }
+    ],
+    "message": "publishers/acme still has 1 book(s). Retry with force=true to delete them too.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+```
+
+### MCP: Create a book
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Create the same book again
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason RESOURCE_ALREADY_EXISTS.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is RESOURCE_ALREADY_EXISTS
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource publishers/acme/books/dune already exists.\",\n  \"metadata\": {},\n  \"reason\": \"RESOURCE_ALREADY_EXISTS\",\n  \"status\": \"ALREADY_EXISTS\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Update with an etag that is out of date
+
+Flag: **PASSED**
+
+Where: tools/call books.update
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason ETAG_MISMATCH.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is ETAG_MISMATCH
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.update",
+    "arguments": {
+      "name": "publishers/acme/books/dune",
+      "title": "New",
+      "updateMask": "title",
+      "etag": "stale"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource was modified; its etag no longer matches.\",\n  \"metadata\": {},\n  \"reason\": \"ETAG_MISMATCH\",\n  \"status\": \"ABORTED\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Update with a field mask that names no field
+
+Flag: **PASSED**
+
+Where: tools/call books.update
+
+Action: Call books.update to Update a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_FIELD_MASK.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_FIELD_MASK
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.update",
+    "arguments": {
+      "name": "publishers/acme/books/dune",
+      "title": "New",
+      "updateMask": "bogus"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The field mask is not valid: bogus.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_FIELD_MASK\",\n  \"status\": \"INVALID_ARGUMENT\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Archive the book
+
+Flag: **PASSED**
+
+Where: tools/call books.archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.archive",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"74b0922e6656e75c\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ARCHIVED",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.019Z"
+}
+```
+
+### MCP: Archive it a second time
+
+Flag: **PASSED**
+
+Where: tools/call books.archive
+
+Action: Call books.archive to Archive a book. Token scopes: read, write.
+
+Expected result: The call fails with the reason INVALID_STATE_TRANSITION.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is INVALID_STATE_TRANSITION
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.archive",
+    "arguments": {
+      "name": "publishers/acme/books/dune"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"The resource cannot move from ARCHIVED to ARCHIVED.\",\n  \"metadata\": {},\n  \"reason\": \"INVALID_STATE_TRANSITION\",\n  \"status\": \"FAILED_PRECONDITION\"\n}",
+    "type": "text"
+  }
+]
+```
+
+### MCP: Delete a publisher that still has books
+
+Flag: **PASSED**
+
+Where: tools/call publishers.delete
+
+Action: Call publishers.delete to Delete a publisher and, with force, its books. Token scopes: read, write.
+
+Expected result: The call fails with the reason HAS_CHILDREN.
+
+Checks:
+
+- PASSED: Outcome is an error
+- PASSED: The error reason is HAS_CHILDREN
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "publishers.delete",
+    "arguments": {
+      "name": "publishers/acme"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+[
+  {
+    "text": "{\n  \"message\": \"publishers/acme still has 1 book(s). Retry with force=true to delete them too.\",\n  \"metadata\": {},\n  \"reason\": \"HAS_CHILDREN\",\n  \"status\": \"FAILED_PRECONDITION\"\n}",
+    "type": "text"
+  }
+]
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

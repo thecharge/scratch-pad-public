@@ -1,0 +1,508 @@
+---
+title: "Cancelling a long-running operation"
+description: "An administrator cancels a reindex that is still running; the operation is kept and ends with the CANCELLED error. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence."
+generated: true
+---
+
+:::caution
+The public address of the console, api, mcp, docs is not set yet. This page shows the local addresses. Set the address in packages/config/factual-urls.json.
+:::
+
+## Goal
+
+An administrator cancels a reindex that is still running; the operation is kept and ends with the CANCELLED error. These are recorded examples. Changing measurements and progress counters use labelled placeholders. Stream read boundaries are combined; progress shows representative first and last samples. Repeated working-task polls are shown once per task. Complete recordings and checks remain in internal evidence.
+
+Category: API calls. This page has 10 step(s). 10 passed.
+
+## Before you start
+
+- The api address is `https://localhost:8443`.
+- The mcp address is `https://localhost:8443/mcp`.
+- A bearer access token with the scopes read, write, admin. The commands show `<YOUR_ACCESS_TOKEN>` where your token goes.
+
+## Steps
+
+### HTTP: Create a book to index
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books?bookId=dune
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books?bookId=dune' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --data '{"title":"Dune","author":"Frank Herbert","authorEmail":"frank@example.com"}'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### HTTP: Start the reindex
+
+Flag: **PASSED**
+
+Where: POST /v1/publishers/acme/books:reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/publishers/acme/books:reindex' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### HTTP: Cancel it while it runs
+
+Flag: **PASSED**
+
+Where: POST /v1/operations/op-00000000-0000-4000-8000-000000000001:cancel
+
+Action: Call operations.cancel to Cancel a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001:cancel' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{}
+```
+
+### HTTP: Read the operation: it is done and carries the CANCELLED error
+
+Flag: **PASSED**
+
+Where: GET /v1/operations/op-00000000-0000-4000-8000-000000000001
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds and the result carries the reason OPERATION_CANCELLED.
+
+Checks:
+
+- PASSED: Outcome is success
+- PASSED: The error reason is OPERATION_CANCELLED
+
+Expected outcome: success
+
+Actual outcome: success
+
+Command:
+
+```bash
+curl --request GET 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (ok, HTTP 200):
+
+```json
+{
+  "done": true,
+  "error": {
+    "code": 499,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "OPERATION_CANCELLED"
+      }
+    ],
+    "message": "The operation operations/op-00000000-0000-4000-8000-000000000001 was cancelled.",
+    "status": "CANCELLED"
+  },
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### HTTP: A reader may not cancel
+
+Flag: **PASSED**
+
+Where: POST /v1/operations/op-00000000-0000-4000-8000-000000000001:cancel
+
+Action: Call operations.cancel to Cancel a long-running operation. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Command:
+
+```bash
+curl --request POST 'https://localhost:8443/v1/operations/op-00000000-0000-4000-8000-000000000001:cancel' \
+  --header 'authorization: Bearer <YOUR_ACCESS_TOKEN>' \
+  --header 'content-type: application/json' \
+  --header 'accept: application/json'
+```
+
+Response (error, HTTP 403):
+
+```json
+{
+  "error": {
+    "code": 403,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "POLICY_DENIED"
+      }
+    ],
+    "message": "You are not allowed to call operations.cancel.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+### MCP: Create a book to index
+
+Flag: **PASSED**
+
+Where: tools/call books.create
+
+Action: Call books.create to Create a book. Token scopes: read, write.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.create",
+    "arguments": {
+      "parent": "publishers/acme",
+      "bookId": "dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "authorEmail": "frank@example.com"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "author": "Frank Herbert",
+  "authorEmail": "frank@example.com",
+  "createTime": "2001-01-01T00:00:00.002Z",
+  "etag": "\"7f1dfbad1003c615\"",
+  "name": "publishers/acme/books/dune",
+  "state": "ACTIVE",
+  "title": "Dune",
+  "updateTime": "2001-01-01T00:00:00.002Z"
+}
+```
+
+### MCP: Start the reindex
+
+Flag: **PASSED**
+
+Where: tools/call books.reindex
+
+Action: Call books.reindex to Reindex the books of a publisher. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "books.reindex",
+    "arguments": {
+      "parent": "publishers/acme"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": false,
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### MCP: Cancel it while it runs
+
+Flag: **PASSED**
+
+Where: tools/call operations.cancel
+
+Action: Call operations.cancel to Cancel a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds.
+
+Checks:
+
+- PASSED: Outcome is success
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.cancel",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{}
+```
+
+### MCP: Read the operation: it is done and carries the CANCELLED error
+
+Flag: **PASSED**
+
+Where: tools/call operations.get
+
+Action: Call operations.get to Get a long-running operation. Token scopes: read, write, admin.
+
+Expected result: The call succeeds and the result carries the reason OPERATION_CANCELLED.
+
+Checks:
+
+- PASSED: Outcome is success
+- PASSED: The result says: OPERATION_CANCELLED
+
+Expected outcome: success
+
+Actual outcome: success
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.get",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (ok):
+
+```json
+{
+  "done": true,
+  "error": {
+    "code": 499,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "domain": "docs.example.test",
+        "reason": "OPERATION_CANCELLED"
+      }
+    ],
+    "message": "The operation operations/op-00000000-0000-4000-8000-000000000001 was cancelled.",
+    "status": "CANCELLED"
+  },
+  "metadata": {
+    "parent": "publishers/acme",
+    "processed": 0,
+    "total": 1
+  },
+  "name": "operations/op-00000000-0000-4000-8000-000000000001"
+}
+```
+
+### MCP: A reader may not cancel
+
+Flag: **PASSED**
+
+Where: tools/call operations.cancel
+
+Action: Call operations.cancel to Cancel a long-running operation. Token scopes: read.
+
+Expected result: The call fails.
+
+Checks:
+
+- PASSED: Outcome is an error
+
+Expected outcome: an error
+
+Actual outcome: an error
+
+Endpoint: `https://localhost:8443/mcp`
+
+Header: `authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+JSON-RPC request:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "operations.cancel",
+    "arguments": {
+      "name": "operations/op-00000000-0000-4000-8000-000000000001"
+    }
+  }
+}
+```
+
+Result (error):
+
+```json
+{
+  "message": "Tool operations.cancel not found"
+}
+```
+
+## If something goes wrong
+
+If a step fails, read the [access errors](/troubleshooting/errors-access/), the [input errors](/troubleshooting/errors-input/), the [state errors](/troubleshooting/errors-state/) and the [server errors](/troubleshooting/errors-server/).

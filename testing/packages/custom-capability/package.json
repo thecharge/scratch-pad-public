@@ -1,0 +1,15 @@
+{
+  "name": "@platform/test-custom-capability",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@platform/capability": "workspace:*",
+    "@platform/constants": "workspace:*",
+    "@platform/types": "workspace:*",
+    "zod": "^4.0.0"
+  }
+}

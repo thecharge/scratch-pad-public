@@ -1,0 +1,10 @@
+{
+  "extends": "./sdk/tsconfig.json",
+  "include": [
+    "sdk/src/**/*.ts",
+    "sdk/generated/**/*.ts",
+    "constants/src/**/*.ts",
+    "types/src/**/*.ts"
+  ],
+  "exclude": ["**/*.test.ts"]
+}
